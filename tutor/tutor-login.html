@@ -1,150 +1,315 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ScholarSync - Tutor Login</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Tutor Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #667eea;
+            --primary-dark: #5a6fd8;
+            --primary-light: #7693f0;
+            --secondary: #764ba2;
+            --danger: #ff4757;
+            --success: #2ed573;
+            --light: #f8f9fa;
+            --dark: #343a40;
+            --gray: #6c757d;
+            --border-radius: 10px;
+            --box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
 
-  <style>
-    :root {
-      --primary: #4361ee;
-      --secondary: #3a0ca3;
-      --accent: #f72585;
-      --gray: #6c757d;
-      --light-gray: #e9ecef;
-      --danger: #f72585;
-      --border-radius: 12px;
-      --shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-      --transition: all 0.3s ease;
-    }
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: #f5f7fb;
-      margin: 0;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-    }
-    .form-wrapper {
-      background: white;
-      border-radius: var(--border-radius);
-      box-shadow: var(--shadow);
-      padding: 2.5rem;
-      width: 100%;
-      max-width: 400px;
-    }
-    .form-header {
-      text-align: center;
-      margin-bottom: 2rem;
-    }
-    .form-header h2 {
-      color: var(--secondary);
-      margin-bottom: 0.5rem;
-    }
-    .form-group {
-      margin-bottom: 1.5rem;
-    }
-    .form-group label {
-      display: block;
-      margin-bottom: 0.5rem;
-    }
-    .form-group input {
-      width: 100%;
-      padding: 0.8rem;
-      border: 2px solid var(--light-gray);
-      border-radius: var(--border-radius);
-    }
-    .btn {
-      width: 100%;
-      padding: 0.8rem;
-      border: none;
-      border-radius: var(--border-radius);
-      background: var(--primary);
-      color: white;
-      font-weight: bold;
-      cursor: pointer;
-      transition: var(--transition);
-    }
-    .btn:hover {
-      background: var(--secondary);
-    }
-    .error-message {
-      color: var(--danger);
-      font-size: 0.85rem;
-      display: none;
-      margin-top: 0.5rem;
-    }
-  </style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+        }
+
+        .login-container {
+            background: white;
+            padding: 2.5rem;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        .login-container h1 {
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .login-container p {
+            color: var(--gray);
+            margin-bottom: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--dark);
+        }
+
+        .input-with-icon {
+            position: relative;
+        }
+
+        .input-with-icon i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--gray);
+        }
+
+        .input-with-icon input {
+            width: 100%;
+            padding: 0.8rem 0.8rem 0.8rem 45px;
+            border: 1px solid var(--gray);
+            border-radius: 5px;
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+
+        .input-with-icon input:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
+        }
+
+        .remember-forgot {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            font-size: 0.9rem;
+        }
+
+        .remember {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .forgot-password {
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        .forgot-password:hover {
+            text-decoration: underline;
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 0.8rem;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .login-btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        .login-error {
+            color: var(--danger);
+            text-align: center;
+            margin-top: 1rem;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .demo-accounts {
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--gray);
+        }
+
+        .demo-accounts h3 {
+            margin-bottom: 1rem;
+            color: var(--dark);
+            font-size: 1rem;
+        }
+
+        .demo-account {
+            background: #f8f9fa;
+            padding: 0.8rem;
+            border-radius: 5px;
+            margin-bottom: 0.8rem;
+            text-align: left;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .demo-account:hover {
+            background: #e9ecef;
+        }
+
+        .demo-account p {
+            margin: 0;
+            font-size: 0.9rem;
+        }
+
+        .demo-account .role {
+            font-weight: bold;
+            color: var(--primary);
+        }
+
+        @media (max-width: 480px) {
+            .login-container {
+                padding: 1.5rem;
+            }
+            
+            .remember-forgot {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.8rem;
+            }
+        }
+    </style>
 </head>
 <body>
+    <div class="login-container">
+        <h1><i class="fas fa-chalkboard-teacher"></i> Tutor Login</h1>
+        <p>Sign in to access your tutoring dashboard</p>
+        
+        <form id="loginForm">
+            <div class="form-group">
+                <label for="email">Email Address</label>
+                <div class="input-with-icon">
+                    <i class="fas fa-envelope"></i>
+                    <input type="email" id="email" placeholder="Enter your email" required>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="password">Password</label>
+                <div class="input-with-icon">
+                    <i class="fas fa-lock"></i>
+                    <input type="password" id="password" placeholder="Enter your password" required>
+                </div>
+            </div>
+            
+            <div class="remember-forgot">
+                <div class="remember">
+                    <input type="checkbox" id="remember">
+                    <label for="remember">Remember me</label>
+                </div>
+                <a href="#" class="forgot-password">Forgot Password?</a>
+            </div>
+            
+            <button type="submit" class="login-btn">
+                <i class="fas fa-sign-in-alt"></i> Login
+            </button>
+            
+            <div id="loginError" class="login-error">
+                <i class="fas fa-exclamation-circle"></i> Invalid email or password
+            </div>
+        </form>
 
-  <div class="form-wrapper">
-    <div class="form-header">
-      <h2>Tutor Login</h2>
-      <p>Access your tutor dashboard</p>
+        <div class="demo-accounts">
+            <h3>Demo Accounts (click to use):</h3>
+            <div class="demo-account" onclick="fillDemoAccount('tutor@example.com', 'tutor123')">
+                <p><span class="role">Tutor Account:</span> tutor@example.com / tutor123</p>
+            </div>
+            
+        </div>
     </div>
-    <form id="loginForm">
-      <div class="form-group">
-        <label for="loginEmail">Email</label>
-        <input type="email" id="loginEmail" placeholder="Enter your email" required>
-        <div class="error-message" id="loginEmailError">Invalid email</div>
-      </div>
-      <div class="form-group">
-        <label for="loginPassword">Password</label>
-        <input type="password" id="loginPassword" placeholder="Enter your password" required>
-        <div class="error-message" id="loginPasswordError">Please enter password</div>
-      </div>
-      <button type="submit" class="btn">Login</button>
-      <div class="error-message" id="loginError" style="text-align:center;margin-top:1rem;"></div>
-    </form>
-  </div>
 
-  <script>
-    document.getElementById('loginForm').addEventListener('submit', function(e) {
-      e.preventDefault();
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check if user is already logged in
+            if (localStorage.getItem('isAuthenticated') === 'true') {
+                window.location.href = 'Dashboard.html';
+            }
 
-      const email = document.getElementById('loginEmail').value.trim();
-      const password = document.getElementById('loginPassword').value.trim();
-      const emailError = document.getElementById('loginEmailError');
-      const passwordError = document.getElementById('loginPasswordError');
-      const loginError = document.getElementById('loginError');
+            // Setup login form handler
+            document.getElementById('loginForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                const email = document.getElementById('email').value;
+                const password = document.getElementById('password').value;
+                
+                // Simple validation
+                if (validateLogin(email, password)) {
+                    // Store authentication status
+                    localStorage.setItem('isAuthenticated', 'true');
+                    localStorage.setItem('userEmail', email);
+                    
+                    // Extract name from email for display
+                    const userName = email.split('@')[0];
+                    localStorage.setItem('userName', userName);
+                    
+                    // Redirect to dashboard
+                    window.location.href = 'Dashboard.html';
+                } else {
+                    // Show error message
+                    document.getElementById('loginError').style.display = 'flex';
+                }
+            });
 
-      emailError.style.display = "none";
-      passwordError.style.display = "none";
-      loginError.style.display = "none";
+            // Clear error when user starts typing
+            document.getElementById('email').addEventListener('input', function() {
+                document.getElementById('loginError').style.display = 'none';
+            });
+            
+            document.getElementById('password').addEventListener('input', function() {
+                document.getElementById('loginError').style.display = 'none';
+            });
+        });
 
-      // Basic validation
-      if (!email) {
-        emailError.style.display = "block";
-        return;
-      }
-      if (!password) {
-        passwordError.style.display = "block";
-        return;
-      }
+        function validateLogin(email, password) {
+            // Simple validation logic (in a real app, this would be a server request)
+            const validAccounts = [
+                { email: 'tutor@example.com', password: 'tutor123' }
+            ];
+            
+            return validAccounts.some(account => 
+                account.email === email && account.password === password
+            );
+        }
 
-      // Dummy account (replace with API check later)
-      const validAccounts = [
-        { email: "tutor@example.com", password: "tutor123" }
-      ];
-
-      const isValid = validAccounts.some(
-        acc => acc.email === email && acc.password === password
-      );
-
-      if (isValid) {
-        // ✅ Redirect to dashboard
-        window.location.href = "/tutor/dashboard/Dashboard.html";
- // make sure Dashboard.html is in same folder
-      } else {
-        loginError.textContent = "Invalid email or password";
-        loginError.style.display = "block";
-      }
-    });
-  </script>
-
+        function fillDemoAccount(email, password) {
+            document.getElementById('email').value = email;
+            document.getElementById('password').value = password;
+            document.getElementById('loginError').style.display = 'none';
+        }
+    </script>
 </body>
 </html>
-
