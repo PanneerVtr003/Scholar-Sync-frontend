@@ -412,7 +412,6 @@
                     <i class="fas fa-graduation-cap"></i>
                     <span>ScholarSync</span>
                 </a>
-                
                 <div class="auth-buttons">
                     <button class="btn btn-outline" onclick="location.href='login.html'">Login</button>
                     <button class="btn btn-primary" onclick="location.href='register.html'">Register</button>
@@ -427,8 +426,8 @@
                     <div class="spinner"></div>
                 </div>
                 <div class="form-header">
-                    <h2>Tutor Login</h2>
-                    <p>Access your tutor dashboard</p>
+                    <h2>Student Login</h2>
+                    <p>Access your student dashboard</p>
                 </div>
                 <form id="loginFormElement">
                     <div class="form-group">
@@ -454,7 +453,9 @@
                     </div>
                     <button type="submit" class="btn btn-primary" style="width: 100%;">Login</button>
                     <div class="error-message" id="loginError" style="text-align: center; margin-top: 1rem;"></div>
-                   
+                    <div class="form-footer">
+                        <p>Don't have an account? <a href="register.html">Register here</a></p>
+                    </div>
                 </form>
             </div>
         </div>
@@ -545,22 +546,11 @@
                     // Simulate API call
                     setTimeout(() => {
                         loadingOverlay.style.display = 'none';
-                         function validateLogin(email, password) {
-            // Simple validation logic (in a real app, this would be a server request)
-            const validAccounts = [
-                { email: 'tutor@example.com', password: 'tutor123' }
-            ];
-            
-            return validAccounts.some(account => 
-                account.email === email && account.password === password
-            );
-        }
-
                         
                         // Simulate random success/failure for demo
                         if (Math.random() > 0.3) {
                             // Success - redirect to dashboard
-                            window.location.href ='tutor\Dashboard.html';
+                            window.location.href = 'Dashboard.html';
                         } else {
                             // Error
                             document.getElementById('loginError').textContent = 'Invalid email or password';
@@ -572,10 +562,4 @@
         });
     </script>
 </body>
-
 </html>
-
-
-
-
-
