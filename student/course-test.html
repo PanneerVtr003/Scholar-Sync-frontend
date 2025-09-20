@@ -708,6 +708,9 @@ footer .container {
                 height: 120px;
                 font-size: 3rem;
             }
+            .course-card{
+                height: auto; /* Changed from 500px to auto */
+            }
             
             .course-meta {
                 flex-direction: column;
@@ -722,12 +725,17 @@ footer .container {
             .marks-table th, .marks-table td {
                 padding: 0.5rem;
             }
-            .btn{
+            
+            /* FIXED: Only hide the logout button on mobile, not all buttons */
+            .auth-buttons .btn {
                 display: none;
-                
             }
+            .header-content{
+                width: 410px;
+            }
+            
             .menu-toggle{
-                margin-left: 100px;
+                margin-left: 120px; /* Removed the large margin */
             }
         }
 
@@ -736,7 +744,7 @@ footer .container {
     display: none;
     flex-direction: column;
     justify-content: space-between;
-    width: 50px;
+    width: 30px;
     height: 21px;
     cursor: pointer;
 }
@@ -1617,10 +1625,10 @@ document.querySelectorAll('nav a').forEach(link => {
                 resultsMessage.textContent = 'Good job! You have a solid foundation.';
             } else if (score >= 2) {
                 resultsMessage.textContent = 'Not bad! Keep studying to improve your knowledge.';
-            } else {
+            else {
                 resultsMessage.textContent = 'Keep practicing! You\'ll improve with more study.';
             }
-        }
+        }}
 
         // Save quiz score to student profile
         function saveQuizScore() {
