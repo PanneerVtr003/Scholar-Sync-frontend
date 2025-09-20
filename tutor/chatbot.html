@@ -1,0 +1,1197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tutor Performance Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+         :root {
+            --primary: #4361ee;
+            --primary-dark: #3a0ca3;
+            --secondary: #f72585;
+            --success: #4cc9f0;
+            --warning: #ffb800;
+            --danger: #f72585;
+            --dark: #212529;
+            --light: #f8f9fa;
+            --gray: #6c757d;
+            --light-gray: #e9ecef;
+            --text-dark: #343a40;
+            --text-light: #6c757d;
+            --border-radius: 12px;
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            --transition: all 0.3s ease;
+            
+            --primary: #4361ee;
+            --secondary: #3a0ca3;
+            --accent: #f72585;
+            --success: #4cc9f0;
+            --warning: #ffb800;
+            --danger: #f72585;
+            --dark: #212529;
+            --light: #f8f9fa;
+            --gray: #6c757d;
+            --light-gray: #e9ecef;
+            --border-radius: 12px;
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            --transition: all 0.3s ease;
+            --background: #f5f7fb;
+        }
+        
+        body {
+            background-color: #f5f7fb;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .dashboard-header {
+            text-align: center;
+            margin-top: 30px;
+            margin-bottom: 30px;
+            color: var(--secondary);
+        }
+        
+        .dashboard-header h1 {
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        
+        .dashboard-header p {
+            color: #7f8c8d;
+            font-size: 1.1rem;
+        }
+        
+        .main-content {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .chat-section {
+            flex: 1;
+        }
+        
+        .stats-section {
+            flex: 1;
+        }
+        
+        .chatbot-container {
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+            margin-bottom: 20px;
+            height: 500px;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .chatbot-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .message {
+            max-width: 75%;
+            padding: 12px 16px;
+            border-radius: 18px;
+            line-height: 1.4;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .message.user {
+            background-color: var(--primary);
+            color: white;
+            align-self: flex-end;
+            border-bottom-right-radius: 5px;
+        }
+        
+        .message.bot {
+            background-color: #f0f2f5;
+            color: var(--secondary);
+            align-self: flex-start;
+            border-bottom-left-radius: 5px;
+        }
+        
+        .chatbot-input {
+            display: flex;
+            padding: 15px;
+            border-top: 1px solid #eee;
+            background-color: #f9f9f9;
+        }
+        
+        .chatbot-input input {
+            flex: 1;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 20px;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+        
+        .chatbot-input input:focus {
+            border-color: var(--primary);
+        }
+        
+        .chatbot-input button {
+            margin-left: 10px;
+            border-radius: 20px;
+            padding: 10px 20px;
+            font-weight: 500;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .stat-card {
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .stat-card h3 {
+            color: var(--secondary);
+            font-weight: 600;
+            margin-bottom: 10px;
+            font-size: 1rem;
+        }
+        
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+        }
+        
+        .pass {
+            color: var(--success);
+        }
+        
+        .fail {
+            color: var(--danger);
+        }
+        
+        .chart-container {
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            padding: 20px;
+            margin-bottom: 20px;
+            height: 300px;
+        }
+        
+        .student-table-container {
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            padding: 20px;
+            margin-bottom: 20px;
+            overflow-x: auto;
+        }
+        
+        .student-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .student-table th, .student-table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .student-table th {
+            background-color: #f8f9fa;
+            color: var(--secondary);
+            font-weight: 600;
+        }
+        
+        .student-table tr:hover {
+            background-color: #f8f9fa;
+        }
+        
+        .status-pass {
+            color: var(--success);
+            font-weight: 600;
+        }
+        
+        .status-fail {
+            color: var(--danger);
+            font-weight: 600;
+        }
+        
+        .btn-secondary {
+            background-color: #ecf0f1;
+            border: none;
+            color: var(--secondary);
+            white-space: normal;
+            text-align: left;
+            padding: 10px 15px;
+            border-radius: 8px;
+            transition: all 0.2s;
+            width: 100%;
+            margin-bottom: 10px;
+        }
+        
+        .btn-secondary:hover:not(:disabled) {
+            background-color: #dde4e6;
+            transform: translateY(-2px);
+        }
+        
+        .suggested-questions {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 1rem;
+        }
+        
+        .typing-indicator {
+            display: inline-block;
+            position: relative;
+            width: 80px;
+            height: 40px;
+        }
+        
+        .typing-dot {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: #7f8c8d;
+            position: absolute;
+            animation: typing 1.4s infinite;
+        }
+        
+        .typing-dot:nth-child(1) {
+            left: 8px;
+            animation-delay: 0s;
+        }
+        
+        .typing-dot:nth-child(2) {
+            left: 16px;
+            animation-delay: 0.2s;
+        }
+        
+        .typing-dot:nth-child(3) {
+            left: 24px;
+            animation-delay: 0.4s;
+        }
+        
+        @keyframes typing {
+            0%, 60%, 100% {
+                transform: translateY(0);
+            }
+            30% {
+                transform: translateY(-5px);
+            }
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .action-buttons .btn {
+            flex: 1;
+        }
+        
+        @media (max-width: 992px) {
+            .main-content {
+                flex-direction: column;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            .footer-column{
+                display: block;
+            }
+
+        }
+        /* Footer */
+       /* Footer Styles */
+footer {
+    background: linear-gradient(135deg, var(--secondary), var(--dark));
+    color: white;
+    padding: 2rem 0 1rem;
+    margin-top: auto;
+}
+
+footer .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 15px;
+    width: 100%;
+}
+
+.footer-content {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+@media (min-width: 576px) {
+    .footer-content {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (min-width: 992px) {
+    .footer-content {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+.footer-column {
+    display: flex;
+    flex-direction: column;
+}
+
+.footer-column h3 {
+    margin-bottom: 1.2rem;
+    font-size: 1.2rem;
+    position: relative;
+    padding-bottom: 0.5rem;
+}
+
+.footer-column h3::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 40px;
+    height: 2px;
+    background-color: var(--primary);
+}
+
+.footer-column p {
+    color: rgba(255, 255, 255, 0.8);
+    margin-bottom: 1rem;
+    line-height: 1.6;
+}
+
+.footer-column ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.footer-column li {
+    margin-bottom: 0.8rem;
+    transition: transform 0.3s ease;
+}
+
+.footer-column li:hover {
+    transform: translateX(5px);
+}
+
+.footer-column a {
+    color: rgba(255, 255, 255, 0.8);
+    text-decoration: none;
+    transition: var(--transition);
+    display: inline-block;
+    padding: 2px 0;
+}
+
+.footer-column a:hover {
+    color: white;
+    transform: translateX(3px);
+}
+
+.social-links {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.social-links a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    transition: var(--transition);
+}
+
+.social-links a:hover {
+    background: var(--primary);
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.copyright {
+    text-align: center;
+    padding-top: 2rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.9rem;
+}
+
+/* Animation for footer elements on load */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.footer-column:nth-child(1) {
+    animation: fadeInUp 0.6s ease forwards;
+}
+
+.footer-column:nth-child(2) {
+    animation: fadeInUp 0.8s ease forwards;
+}
+
+.footer-column:nth-child(3) {
+    animation: fadeInUp 1s ease forwards;
+}
+
+.footer-column:nth-child(4) {
+    animation: fadeInUp 1.2s ease forwards;
+}
+
+/* Responsive adjustments for very small screens */
+@media (max-width: 576px) {
+    footer {
+        padding: 1.5rem 0 1rem;
+    }
+    
+    .footer-content {
+        gap: 1.5rem;
+    }
+    
+    .footer-column h3 {
+        font-size: 1.1rem;
+        margin-bottom: 1rem;
+    }
+    
+    .social-links {
+        justify-content: center;
+    }
+    
+    .copyright {
+        padding-top: 1.5rem;
+    }
+}
+
+/* Hover effects for better interactivity */
+.footer-column li a {
+    position: relative;
+}
+
+.footer-column li a::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 1px;
+    background-color: var(--primary);
+    transition: width 0.3s ease;
+}
+
+.footer-column li a:hover::before {
+    width: 100%;
+}
+
+/* Print styles */
+@media print {
+    footer {
+        display: none;
+    }
+}
+
+        .back-btn {
+        background: var(--primary);
+        border-radius: 20px;
+        border: none;
+        padding: 9px;
+        margin-bottom: 30px;
+        }
+        .back-btn a{
+            text-decoration: none;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="dashboard-header">
+            <h1>Tutor Performance Dashboard</h1>
+            <p>Analyze student performance and track progress</p>
+           
+        </div>
+        <button class="back-btn">
+            <a href="Dashboard.html"><i class="fas fa-arrow-left"></i>  back to dashboard</a>
+           </button>
+        
+
+        <div class="action-buttons">
+            <button class="btn btn-primary" id="import-data">
+                <i class="fas fa-file-import"></i> Import Student Data
+            </button>
+            <button class="btn btn-success" id="calculate-grades">
+                <i class="fas fa-calculator"></i> Calculate All Grades
+            </button>
+            <button class="btn btn-info" id="generate-report">
+                <i class="fas fa-chart-bar"></i> Generate Performance Report
+            </button>
+        </div>
+
+        <div class="main-content">
+            <div class="chat-section">
+                <div class="chatbot-container">
+                    <div class="chatbot-messages" id="chatbot-messages">
+                        <div class="message bot">
+                            <div class="message-content">
+                                Hello! I'm your tutor assistant. I can help you analyze student performance 
+                                and provide information about specific students and subjects. How can I assist you today?
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="chatbot-input">
+                        <input
+                            type="text"
+                            id="chat-input"
+                            placeholder="Ask about a student or subject..."
+                        />
+                        <button 
+                            type="button" 
+                            class="btn btn-primary"
+                            id="send-button"
+                        >
+                            Send
+                        </button>
+                    </div>
+                </div>
+
+                <div class="card mt-3 p-3">
+                    <h3>Suggested Questions</h3>
+                    <div class="suggested-questions">
+                        <button class="btn btn-secondary suggested-btn">
+                            How is Panneer performing in Java?
+                        </button>
+                        <button class="btn btn-secondary suggested-btn">
+                            Show students in Python class
+                        </button>
+                        <button class="btn btn-secondary suggested-btn">
+                            What's Mohan's attendance rate?
+                        </button>
+                        <button class="btn btn-secondary suggested-btn">
+                            Which students need improvement?
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="stats-section">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <h3>Total Students</h3>
+                        <div class="stat-value" id="total-students">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Average Attendance</h3>
+                        <div class="stat-value pass" id="avg-attendance">0%</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Excellent Performance</h3>
+                        <div class="stat-value pass" id="excellent-count">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Needs Improvement</h3>
+                        <div class="stat-value fail" id="improvement-count">0</div>
+                    </div>
+                </div>
+                
+                <div class="chart-container">
+                    <canvas id="performance-chart"></canvas>
+                </div>
+                
+                <div class="chart-container">
+                    <canvas id="subject-chart"></canvas>
+                </div>
+            </div>
+        </div>
+
+           <div class="student-table-container" style="width: 0px; height: 0px; box-shadow: none;display: none;">
+                <h3>Student Performance</h3>
+                <table class="student-table">
+                    <thead>
+                        <tr>
+                            <th>Student ID</th>
+                            <th>Name</th>
+                            <th>Class</th>
+                            <th>Grade</th>
+                            <th>Attendance</th>
+                            <th>Performance</th>
+                            <th>Status</th>
+                            <th>Last Activity</th>
+                        </tr>
+                    </thead>
+                    <tbody id="student-data">
+                        <!-- Student data will be populated here -->
+                    </tbody>
+                </table>
+            </div> 
+
+    </div>
+
+    
+    <!-- Footer -->
+    <footer id="contact">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>EduSphere</h3>
+                    <p>Transforming education through technology and innovation.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="#features">Features</a></li>
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Contact</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Student Resources</h3>
+                    <ul>
+                        <li><a href="login.html">Student Login</a></li>
+                        <li><a href="register.html">Student Registration</a></li>
+                        <li><a href="dashboard.html">Dashboard</a></li>
+                        <li><a href="course-test.html">Course Tests</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Tutor Resources</h3>
+                    <ul>
+                        <li><a href="login.html">Tutor Login</a></li>
+                        <li><a href="#">Tutor Registration</a></li>
+                        <li><a href="teacher-dashboard.html">Tutor Dashboard</a></li>
+                        <li><a href="data-retrieval.html">Student Data</a></li>
+                    </ul>
+                </div>
+            </div>
+             
+            
+        </div>
+        <div class="copyright">
+                <p>&copy; 2023 EduSphere. All rights reserved.</p>
+            </div>
+           
+    </footer>
+
+
+    <script>
+        // Mock student data
+        const mockStudents = [
+            {
+                id: 'S001',
+                name: 'Panneer',
+                class: 'Java',
+                grade: 'B.E',
+                attendance: '95%',
+                performance: '87%',
+                status: 'good',
+                lastActivity: '2024-01-15',
+                assignments: {
+                    completed: 12,
+                    pending: 2,
+                    averageScore: '85%'
+                },
+                contact: {
+                    email: 'panneer@gmail.com',
+                    phone: '9360702428'
+                    
+                }
+            },
+            {
+                id: 'S002',
+                name: 'Mohan',
+                class: 'javaScript',
+                grade: 'B.E',
+                attendance: '98%',
+                performance: '92%',
+                status: 'excellent',
+                lastActivity: '2024-01-14',
+                assignments: {
+                    completed: 15,
+                    pending: 0,
+                    averageScore: '94%'
+                },
+                contact: {
+                    email: 'mohan@gmail.com',
+                    phone: '9658423279'
+                }
+            },
+            {
+                id: 'S003',
+                name: 'Mounika',
+                class: 'Python',
+                grade: 'B.E',
+                attendance: '88%',
+                performance: '78%',
+                status: 'average',
+                lastActivity: '2024-01-13',
+                assignments: {
+                    completed: 10,
+                    pending: 3,
+                    averageScore: '76%'
+                },
+                contact: {
+                    email: 'mounika@gmail.com',
+                    phone: '+7759815254'
+                }
+            },
+            {
+                id: 'S004',
+                name: 'Pavithra',
+                class: 'Python',
+                grade: 'B.E',
+                attendance: '82%',
+                performance: '65%',
+                status: 'needs_improvement',
+                lastActivity: '2024-01-12',
+                assignments: {
+                    completed: 8,
+                    pending: 5,
+                    averageScore: '62%'
+                },
+                contact: {
+                    email: 'pavithra@gmail.com',
+                    phone: '8875561561'
+                }
+            },
+            {
+                id: 'S005',
+                name: 'Vijay',
+                class: 'DSA',
+                grade: 'B.E',
+                attendance: '96%',
+                performance: '89%',
+                status: 'good',
+                lastActivity: '2024-01-16',
+                assignments: {
+                    completed: 14,
+                    pending: 1,
+                    averageScore: '88%'
+                },
+                contact: {
+                    email: 'vijay@gmail.com',
+                    phone: '7667360699'
+                }
+            },
+            {
+                id: 'S006',
+                name: 'Thiru',
+                class: 'Flutter',
+                grade: 'B.E',
+                attendance: '91%',
+                performance: '94%',
+                status: 'excellent',
+                lastActivity: '2024-01-15',
+                assignments: {
+                    completed: 16,
+                    pending: 0,
+                    averageScore: '93%'
+                },
+                contact: {
+                    email: 'thiru@gmail.com',
+                    phone: '9500652559'
+                }
+            }
+        ];
+
+        // DOM elements
+        const messagesContainer = document.getElementById('chatbot-messages');
+        const chatInput = document.getElementById('chat-input');
+        const sendButton = document.getElementById('send-button');
+        const suggestedButtons = document.querySelectorAll('.suggested-btn');
+        const studentTable = document.getElementById('student-data');
+        const totalStudentsEl = document.getElementById('total-students');
+        const avgAttendanceEl = document.getElementById('avg-attendance');
+        const excellentCountEl = document.getElementById('excellent-count');
+        const improvementCountEl = document.getElementById('improvement-count');
+        const importBtn = document.getElementById('import-data');
+        const calculateBtn = document.getElementById('calculate-grades');
+        const reportBtn = document.getElementById('generate-report');
+
+        let loading = false;
+        let processedData = mockStudents;
+
+        // Initialize charts
+        const performanceChart = new Chart(document.getElementById('performance-chart'), {
+            type: 'doughnut',
+            data: {
+                labels: ['Excellent', 'Good', 'Average', 'Needs Improvement'],
+                datasets: [{
+                    data: [0, 0, 0, 0],
+                    backgroundColor: ['#2ecc71', '#3498db', '#f39c12', '#e74c3c']
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Performance Distribution'
+                    }
+                }
+            }
+        });
+
+        const subjectChart = new Chart(document.getElementById('subject-chart'), {
+            type: 'bar',
+            data: {
+                labels: ['Java', 'JavaScript', 'Python', 'DSA', 'Flutter'],
+                datasets: [{
+                    label: 'Average Performance',
+                    data: [0, 0, 0, 0, 0],
+                    backgroundColor: '#3498db'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 100
+                    }
+                },
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Subject Performance'
+                    }
+                }
+            }
+        });
+
+        // Function to add a message to the chat
+        function addMessage(text, sender) {
+            const messageElement = document.createElement('div');
+            messageElement.classList.add('message', sender);
+            
+            const messageContent = document.createElement('div');
+            messageContent.classList.add('message-content');
+            messageContent.textContent = text;
+            
+            messageElement.appendChild(messageContent);
+            messagesContainer.appendChild(messageElement);
+            
+            // Scroll to bottom
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+
+        // Function to show loading indicator
+        function showLoading() {
+            if (loading) return;
+            
+            loading = true;
+            const loadingElement = document.createElement('div');
+            loadingElement.classList.add('message', 'bot');
+            loadingElement.id = 'loading-indicator';
+            
+            const typingIndicator = document.createElement('div');
+            typingIndicator.classList.add('typing-indicator');
+            
+            for (let i = 0; i < 3; i++) {
+                const dot = document.createElement('div');
+                dot.classList.add('typing-dot');
+                typingIndicator.appendChild(dot);
+            }
+            
+            loadingElement.appendChild(typingIndicator);
+            messagesContainer.appendChild(loadingElement);
+            
+            // Scroll to bottom
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            
+            // Disable input and buttons
+            chatInput.disabled = true;
+            sendButton.disabled = true;
+            suggestedButtons.forEach(btn => btn.disabled = true);
+        }
+
+        // Function to hide loading indicator
+        function hideLoading() {
+            loading = false;
+            const loadingElement = document.getElementById('loading-indicator');
+            if (loadingElement) {
+                loadingElement.remove();
+            }
+            
+            // Enable input and buttons
+            chatInput.disabled = false;
+            sendButton.disabled = false;
+            suggestedButtons.forEach(btn => btn.disabled = false);
+        }
+
+        // Process student data
+        function processStudentData() {
+            updateDashboard();
+        }
+
+        // Update dashboard with processed data
+        function updateDashboard() {
+            // Update student table
+            studentTable.innerHTML = '';
+            processedData.forEach(student => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${student.id}</td>
+                    <td>${student.name}</td>
+                    <td>${student.class}</td>
+                    <td>${student.grade}</td>
+                    <td>${student.attendance}</td>
+                    <td>${student.performance}</td>
+                    <td class="status-${student.status.toLowerCase().replace(' ', '-')}">${student.status.replace('_', ' ')}</td>
+                    <td>${student.lastActivity}</td>
+                `;
+                studentTable.appendChild(row);
+            });
+            
+            // Calculate statistics
+            const totalStudents = processedData.length;
+            const excellentCount = processedData.filter(student => student.status === 'excellent').length;
+            const improvementCount = processedData.filter(student => student.status === 'needs_improvement').length;
+            
+            // Calculate average attendance
+            const totalAttendance = processedData.reduce((sum, student) => {
+                return sum + parseInt(student.attendance);
+            }, 0);
+            const avgAttendance = Math.round(totalAttendance / totalStudents);
+            
+            // Update stats cards
+            totalStudentsEl.textContent = totalStudents;
+            excellentCountEl.textContent = excellentCount;
+            improvementCountEl.textContent = improvementCount;
+            avgAttendanceEl.textContent = `${avgAttendance}%`;
+            
+            // Update performance chart
+            performanceChart.data.datasets[0].data = [
+                excellentCount,
+                processedData.filter(student => student.status === 'good').length,
+                processedData.filter(student => student.status === 'average').length,
+                improvementCount
+            ];
+            performanceChart.update();
+            
+            // Calculate subject averages and update subject chart
+            const subjects = ['Java', 'JavaScript', 'Python', 'DSA', 'Flutter'];
+            const subjectAverages = subjects.map(subject => {
+                const subjectStudents = processedData.filter(student => student.class === subject);
+                if (subjectStudents.length === 0) return 0;
+                
+                const totalPerformance = subjectStudents.reduce((sum, student) => {
+                    return sum + parseInt(student.performance);
+                }, 0);
+                
+                return Math.round(totalPerformance / subjectStudents.length);
+            });
+            
+            subjectChart.data.datasets[0].data = subjectAverages;
+            subjectChart.update();
+        }
+
+        // Function to handle bot responses
+        function getBotResponse(userInput) {
+            const lowerInput = userInput.toLowerCase();
+            
+            // Check for student names
+            const studentNames = processedData.map(student => student.name.toLowerCase());
+            const mentionedStudent = studentNames.find(name => lowerInput.includes(name));
+            
+            // Check for subjects/classes
+            const subjects = processedData.map(student => student.class.toLowerCase());
+            const mentionedSubject = subjects.find(subject => lowerInput.includes(subject));
+            
+            if (mentionedStudent) {
+                const student = processedData.find(s => s.name.toLowerCase() === mentionedStudent);
+                
+                if (lowerInput.includes("attendance")) {
+                    return `${student.name}'s attendance is ${student.attendance}.`;
+                }
+                else if (lowerInput.includes("performance") || lowerInput.includes("how is") || lowerInput.includes("how are")) {
+                    return `${student.name} is performing ${student.status.replace('_', ' ')} in ${student.class} with a ${student.performance} score.`;
+                }
+                else if (lowerInput.includes("contact") || lowerInput.includes("email") || lowerInput.includes("phone")) {
+                    return `${student.name}'s contact information: Email - ${student.contact.email}, Phone - ${student.contact.phone}.`;
+                }
+                else if (lowerInput.includes("assignment")) {
+                    return `${student.name} has completed ${student.assignments.completed} assignments with ${student.assignments.pending} pending. Their average score is ${student.assignments.averageScore}.`;
+                }
+                else {
+                    return `${student.name} is enrolled in ${student.class}. Their current performance is ${student.performance} with ${student.attendance} attendance. Status: ${student.status.replace('_', ' ')}.`;
+                }
+            }
+            else if (mentionedSubject) {
+                const subjectStudents = processedData.filter(student => student.class.toLowerCase() === mentionedSubject);
+                
+                if (subjectStudents.length === 0) {
+                    return `There are no students enrolled in ${mentionedSubject}.`;
+                }
+                
+                const topPerformer = subjectStudents.reduce((top, student) => {
+                    return parseInt(student.performance) > parseInt(top.performance) ? student : top;
+                }, subjectStudents[0]);
+                
+                const avgPerformance = Math.round(subjectStudents.reduce((sum, student) => 
+                    sum + parseInt(student.performance), 0) / subjectStudents.length);
+                
+                const studentList = subjectStudents.map(s => s.name).join(', ');
+                
+                return `There are ${subjectStudents.length} students in ${mentionedSubject}: ${studentList}. 
+                The average performance is ${avgPerformance}%. 
+                The top performer is ${topPerformer.name} with ${topPerformer.performance}%.`;
+            }
+            else if (lowerInput.includes("attendance") || lowerInput.includes("present")) {
+                const totalAttendance = processedData.reduce((sum, student) => {
+                    return sum + parseInt(student.attendance);
+                }, 0);
+                const avgAttendance = Math.round(totalAttendance / processedData.length);
+                
+                return `The average attendance across all students is ${avgAttendance}%.`;
+            }
+            else if (lowerInput.includes("improvement") || lowerInput.includes("struggling")) {
+                const strugglingStudents = processedData.filter(student => student.status === 'needs_improvement');
+                
+                if (strugglingStudents.length === 0) {
+                    return "Great news! No students are currently flagged as needing improvement.";
+                }
+                
+                const studentList = strugglingStudents.map(s => s.name).join(', ');
+                return `${strugglingStudents.length} students need improvement: ${studentList}.`;
+            }
+            else if (lowerInput.includes("excellent") || lowerInput.includes("top")) {
+                const excellentStudents = processedData.filter(student => student.status === 'excellent');
+                
+                if (excellentStudents.length === 0) {
+                    return "No students are currently flagged as excellent performers.";
+                }
+                
+                const studentList = excellentStudents.map(s => s.name).join(', ');
+                return `${excellentStudents.length} students are performing excellently: ${studentList}.`;
+            }
+            else if (lowerInput.includes("hello") || lowerInput.includes("hi") || lowerInput.includes("hey")) {
+                return "Hello! I can help you analyze student performance. Ask me about specific students or subjects.";
+            }
+            else if (lowerInput.includes("thank")) {
+                return "You're welcome! Let me know if you need any other information about the students.";
+            }
+            else {
+                return "I can help you analyze student performance. You can ask me about specific students (like 'How is Panneer doing?') or subjects (like 'Who is in Python class?').";
+            }
+        }
+
+        // Event listeners
+        sendButton.addEventListener('click', function() {
+            const inputText = chatInput.value.trim();
+            if (!inputText) return;
+            
+            // Add user message
+            addMessage(inputText, 'user');
+            chatInput.value = '';
+            
+            // Show loading and simulate bot response
+            showLoading();
+            
+            setTimeout(() => {
+                hideLoading();
+                
+                // Add bot response
+                const botResponse = getBotResponse(inputText);
+                addMessage(botResponse, 'bot');
+            }, 1000);
+        });
+        
+        chatInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                sendButton.click();
+            }
+        });
+        
+        suggestedButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const question = this.textContent;
+                chatInput.value = question;
+                sendButton.click();
+            });
+        });
+        
+        importBtn.addEventListener('click', function() {
+            showLoading();
+            setTimeout(() => {
+                hideLoading();
+                processStudentData();
+                addMessage("I've imported student data. The dashboard has been updated.", 'bot');
+            }, 1500);
+        });
+        
+        calculateBtn.addEventListener('click', function() {
+            showLoading();
+            setTimeout(() => {
+                hideLoading();
+                processStudentData();
+                addMessage("I've processed all student data. The dashboard has been updated.", 'bot');
+            }, 1000);
+        });
+        
+        reportBtn.addEventListener('click', function() {
+            showLoading();
+            setTimeout(() => {
+                hideLoading();
+                addMessage("I've generated a performance report. Check the charts and table for detailed analysis.", 'bot');
+            }, 1000);
+        });
+
+        // Initialize with sample data
+        processStudentData();
+    </script>
+</body>
+</html>

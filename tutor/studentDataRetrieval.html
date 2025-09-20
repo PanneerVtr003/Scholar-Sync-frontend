@@ -1,0 +1,1553 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Data Management</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #4361ee;
+            --secondary: #3a0ca3;
+            --success: #4cc9f0;
+            --warning: #f72585;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --gray: #6c757d;
+            --border-radius: 12px;
+            --box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e9f2 100%);
+            min-height: 100vh;
+            color: var(--dark);
+            line-height: 1.6;
+        }
+
+        .student-data-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .data-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+        }
+
+        .data-header h1 {
+            color: var(--primary);
+            font-size: 1.8rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .data-header h1 i {
+            background: var(--primary);
+            color: white;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: var(--light);
+            padding: 8px 15px;
+            border-radius: 30px;
+            font-weight: 500;
+        }
+
+        .user-info i {
+            color: var(--primary);
+        }
+
+        .back-btn {
+        background: var(--primary);
+        border-radius: 20px;
+        border: none;
+        padding: 9px;
+        }
+        .back-btn a{
+            text-decoration: none;
+            color: white;
+        }
+
+        .dashboard-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .dashboard-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            transition: var(--transition);
+        }
+
+        .dashboard-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        .students-icon {
+            background: rgba(67, 97, 238, 0.1);
+            color: var(--primary);
+        }
+
+        .attendance-icon {
+            background: rgba(76, 201, 240, 0.1);
+            color: var(--success);
+        }
+
+        .performance-icon {
+            background: rgba(247, 37, 133, 0.1);
+            color: var(--warning);
+        }
+
+        .card-value {
+            font-size: 2rem;
+            font-weight: 700;
+            margin: 0.5rem 0;
+        }
+
+        .card-title {
+            color: var(--gray);
+            font-weight: 500;
+        }
+
+        .controls-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .search-section {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .search-box {
+            display: flex;
+            position: relative;
+            min-width: 300px;
+        }
+
+        #searchInput {
+            flex: 1;
+            padding: 12px 20px 12px 45px;
+            border: 2px solid #e2e8f0;
+            border-radius: 30px;
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+
+        #searchInput:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--gray);
+        }
+
+        .search-btn, .show-all-btn {
+            background: var(--primary);
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: 500;
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: var(--transition);
+        }
+
+        .search-btn:hover, .show-all-btn:hover {
+            background: var(--secondary);
+            transform: translateY(-2px);
+        }
+
+        .view-toggle {
+            display: flex;
+            background: var(--light);
+            border-radius: 30px;
+            padding: 5px;
+        }
+
+        .view-btn {
+            padding: 8px 15px;
+            border: none;
+            background: none;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+
+        .view-btn.active {
+            background: var(--primary);
+            color: white;
+        }
+
+        .filters {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .filter-group label {
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--gray);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .filters select {
+            padding: 10px 15px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            background: white;
+            font-size: 1rem;
+            min-width: 180px;
+            transition: var(--transition);
+        }
+
+        .filters select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
+        }
+
+        .students-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .student-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            cursor: pointer;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .student-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .student-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }
+
+        .student-name {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: 0.25rem;
+        }
+
+        .student-id {
+            color: var(--gray);
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .student-status {
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .status-excellent {
+            background: rgba(40, 167, 69, 0.1);
+            color: #28a745;
+        }
+
+        .status-good {
+            background: rgba(23, 162, 184, 0.1);
+            color: #17a2b8;
+        }
+
+        .status-average {
+            background: rgba(255, 193, 7, 0.1);
+            color: #ffc107;
+        }
+
+        .status-needs_improvement {
+            background: rgba(220, 53, 69, 0.1);
+            color: #dc3545;
+        }
+
+        .student-info {
+            display: grid;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+        }
+
+        .info-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .info-label {
+            color: var(--gray);
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .info-value {
+            color: var(--dark);
+            font-weight: 600;
+        }
+
+        .performance-bar {
+            height: 8px;
+            background: #e9ecef;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-top: 0.5rem;
+        }
+
+        .performance-progress {
+            height: 100%;
+            border-radius: 4px;
+        }
+
+        .progress-excellent {
+            background: #28a745;
+            width: 92%;
+        }
+
+        .progress-good {
+            background: #17a2b8;
+            width: 87%;
+        }
+
+        .progress-average {
+            background: #ffc107;
+            width: 78%;
+        }
+
+        .progress-needs_improvement {
+            background: #dc3545;
+            width: 65%;
+        }
+
+        .student-card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid #e9ecef;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .last-activity {
+            font-size: 0.85rem;
+            color: var(--gray);
+        }
+
+        .view-details-btn {
+            background: var(--light);
+            color: var(--primary);
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .view-details-btn:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        .student-details-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            padding: 20px;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition);
+        }
+
+        .student-details-modal.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: var(--border-radius);
+            width: 90%;
+            max-width: 800px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25);
+            transform: translateY(20px);
+            transition: var(--transition);
+        }
+
+        .student-details-modal.active .modal-content {
+            transform: translateY(0);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem;
+            border-bottom: 1px solid #e9ecef;
+            background: var(--light);
+            border-radius: var(--border-radius) var(--border-radius) 0 0;
+        }
+
+        .modal-header h2 {
+            color: var(--dark);
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .close-btn {
+            font-size: 1.8rem;
+            cursor: pointer;
+            color: var(--gray);
+            transition: var(--transition);
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+        }
+
+        .close-btn:hover {
+            color: var(--dark);
+            background: rgba(0, 0, 0, 0.05);
+        }
+
+        .modal-body {
+            padding: 2rem;
+        }
+
+        .detail-section {
+            margin-bottom: 2rem;
+        }
+
+        .detail-section h3 {
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .detail-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .detail-item {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            padding: 1rem;
+            background: var(--light);
+            border-radius: 8px;
+        }
+
+        .detail-label {
+            color: var(--gray);
+            font-weight: 500;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .detail-value {
+            color: var(--dark);
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .performance-chart {
+            width: 100%;
+            height: 200px;
+            background: var(--light);
+            border-radius: 8px;
+            margin-top: 1rem;
+            display: flex;
+            align-items: flex-end;
+            padding: 1rem;
+            gap: 15px;
+        }
+
+        .chart-bar {
+            flex: 1;
+            background: var(--primary);
+            border-radius: 4px 4px 0 0;
+            position: relative;
+            transition: var(--transition);
+        }
+
+        .chart-bar:hover {
+            opacity: 0.8;
+        }
+
+        .chart-label {
+            position: absolute;
+            bottom: -25px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            font-size: 0.8rem;
+            color: var(--gray);
+        }
+
+        .marks-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1.5rem;
+        }
+
+        .marks-table th, .marks-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--light-gray);
+        }
+
+        .marks-table th {
+            background: var(--light);
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        .marks-table tr:hover {
+            background: var(--light);
+        }
+
+        .navigation {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 2rem;
+        }
+
+        .nav-btn {
+            background: white;
+            color: var(--dark);
+            padding: 12px 25px;
+            border: 2px solid #e9ecef;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: var(--transition);
+        }
+
+        .nav-btn:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+            transform: translateY(-2px);
+        }
+
+        .nav-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        /* Responsive styles */
+        @media (max-width: 768px) {
+            .data-header {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+            
+            .dashboard-cards {
+                grid-template-columns: 1fr;
+            }
+            
+            .controls-section {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .search-box {
+                min-width: 100%;
+            }
+            
+            .filters {
+                flex-direction: column;
+            }
+            
+            .filters select {
+                min-width: 100%;
+            }
+            
+            .students-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .detail-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .student-card-footer {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+
+        /* Footer Styles */
+footer {
+    background: linear-gradient(135deg, var(--secondary), var(--dark));
+    color: white;
+    padding: 2rem 0 1rem;
+    margin-top: auto;
+}
+
+footer .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 15px;
+    width: 100%;
+}
+
+.footer-content {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+@media (min-width: 576px) {
+    .footer-content {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (min-width: 992px) {
+    .footer-content {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+.footer-column {
+    display: flex;
+    flex-direction: column;
+}
+
+.footer-column h3 {
+    margin-bottom: 1.2rem;
+    font-size: 1.2rem;
+    position: relative;
+    padding-bottom: 0.5rem;
+}
+
+.footer-column h3::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 40px;
+    height: 2px;
+    background-color: var(--primary);
+}
+
+.footer-column p {
+    color: rgba(255, 255, 255, 0.8);
+    margin-bottom: 1rem;
+    line-height: 1.6;
+}
+
+.footer-column ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.footer-column li {
+    margin-bottom: 0.8rem;
+    transition: transform 0.3s ease;
+}
+
+.footer-column li:hover {
+    transform: translateX(5px);
+}
+
+.footer-column a {
+    color: rgba(255, 255, 255, 0.8);
+    text-decoration: none;
+    transition: var(--transition);
+    display: inline-block;
+    padding: 2px 0;
+}
+
+.footer-column a:hover {
+    color: white;
+    transform: translateX(3px);
+}
+
+.social-links {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.social-links a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    transition: var(--transition);
+}
+
+.social-links a:hover {
+    background: var(--primary);
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.copyright {
+    text-align: center;
+    padding-top: 2rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.9rem;
+}
+
+/* Animation for footer elements on load */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.footer-column:nth-child(1) {
+    animation: fadeInUp 0.6s ease forwards;
+}
+
+.footer-column:nth-child(2) {
+    animation: fadeInUp 0.8s ease forwards;
+}
+
+.footer-column:nth-child(3) {
+    animation: fadeInUp 1s ease forwards;
+}
+
+.footer-column:nth-child(4) {
+    animation: fadeInUp 1.2s ease forwards;
+}
+
+/* Responsive adjustments for very small screens */
+@media (max-width: 576px) {
+    footer {
+        padding: 1.5rem 0 1rem;
+    }
+    
+    .footer-content {
+        gap: 1.5rem;
+    }
+    
+    .footer-column h3 {
+        font-size: 1.1rem;
+        margin-bottom: 1rem;
+    }
+    
+    .social-links {
+        justify-content: center;
+    }
+    
+    .copyright {
+        padding-top: 1.5rem;
+    }
+}
+
+/* Hover effects for better interactivity */
+.footer-column li a {
+    position: relative;
+}
+
+.footer-column li a::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 1px;
+    background-color: var(--primary);
+    transition: width 0.3s ease;
+}
+
+.footer-column li a:hover::before {
+    width: 100%;
+}
+
+/* Print styles */
+@media print {
+    footer {
+        display: none;
+    }
+}
+    </style>
+</head>
+<body>
+    <div class="student-data-container">
+        <header class="data-header">
+            <h1><i class="fas fa-user-graduate"></i> Student Data Management</h1>
+
+            
+            <div class="header-actions">
+                <div class="user-info">
+                    <i class="fas fa-user-tie"></i>
+                    <span id="userName">Tutor</span>
+                </div>
+                <button class="back-btn">
+            <a href="Dashboard.html"><i class="fas fa-arrow-left"></i>  back to dashboard</a>
+           </button>
+            </div>
+        </header>
+
+        <div class="dashboard-cards">
+            <div class="dashboard-card">
+                <div class="card-icon students-icon">
+                    <i class="fas fa-users"></i>
+                </div>
+                <div class="card-value" id="totalStudents">0</div>
+                <div class="card-title">Total Students</div>
+            </div>
+            <div class="dashboard-card">
+                <div class="card-icon attendance-icon">
+                    <i class="fas fa-calendar-check"></i>
+                </div>
+                <div class="card-value" id="avgAttendance">0%</div>
+                <div class="card-title">Average Attendance</div>
+            </div>
+            <div class="dashboard-card">
+                <div class="card-icon performance-icon">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+                <div class="card-value" id="avgPerformance">0%</div>
+                <div class="card-title">Average Performance</div>
+            </div>
+        </div>
+
+        <div class="controls-section">
+            <div class="search-section">
+                <div class="search-box">
+                    <i class="fas fa-search search-icon"></i>
+                    <input 
+                        type="text" 
+                        id="searchInput" 
+                        placeholder="Search students by name or ID..."
+                        onkeypress="handleSearchKeyPress(event)"
+                    />
+                </div>
+                <button onclick="searchStudents()" class="search-btn">
+                    <i class="fas fa-search"></i> Search
+                </button>
+                <button onclick="showAllStudents()" class="show-all-btn">
+                    <i class="fas fa-sync"></i> Reset Filters
+                </button>
+            </div>
+            
+            <div class="view-toggle">
+                <button class="view-btn active" id="gridViewBtn" onclick="toggleView('grid')">
+                    <i class="fas fa-th"></i>
+                </button>
+                <button class="view-btn" id="listViewBtn" onclick="toggleView('list')">
+                    <i class="fas fa-list"></i>
+                </button>
+            </div>
+        </div>
+
+        <div class="filters">
+            <div class="filter-group">
+                <label for="classFilter"><i class="fas fa-chalkboard"></i> Class</label>
+                <select id="classFilter" onchange="filterStudents()">
+                    <option value="">All Classes</option>
+                    <option value="Python">Python</option>
+                    <option value="Java">Java</option>
+                    <option value="JavaScript">JavaScript</option>
+                    <option value="DSA">DSA</option>
+                    <option value="Flutter">Flutter</option>
+                </select>
+            </div>
+            
+            <div class="filter-group">
+                <label for="performanceFilter"><i class="fas fa-chart-bar"></i> Performance</label>
+                <select id="performanceFilter" onchange="filterStudents()">
+                    <option value="">All Performance</option>
+                    <option value="excellent">Excellent (90-100%)</option>
+                    <option value="good">Good (75-89%)</option>
+                    <option value="average">Average (60-74%)</option>
+                    <option value="needs_improvement">Needs Improvement (<60%)</option>
+                </select>
+            </div>
+            
+            <div class="filter-group">
+                <label for="sortBy"><i class="fas fa-sort"></i> Sort By</label>
+                <select id="sortBy" onchange="sortStudents()">
+                    <option value="name">Name (A-Z)</option>
+                    <option value="nameDesc">Name (Z-A)</option>
+                    <option value="performance">Performance (High to Low)</option>
+                    <option value="performanceDesc">Performance (Low to High)</option>
+                    <option value="attendance">Attendance (High to Low)</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="students-grid" id="studentsGrid">
+            <!-- Student cards will be inserted here -->
+        </div>
+
+        <div class="student-details-modal" id="studentModal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2><i class="fas fa-user-graduate"></i> <span id="modalStudentName">Student Details</span></h2>
+                    <span class="close-btn" onclick="closeModal()">&times;</span>
+                </div>
+                <div class="modal-body" id="modalBody">
+                    <!-- Student details will be inserted here -->
+                </div>
+            </div>
+        </div>
+
+        
+    </div>
+
+  <!-- Footer -->
+    <footer id="contact">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>EduSphere</h3>
+                    <p>Transforming education through technology and innovation.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="#features">Features</a></li>
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Contact</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Student Resources</h3>
+                    <ul>
+                        <li><a href="login.html">Student Login</a></li>
+                        <li><a href="register.html">Student Registration</a></li>
+                        <li><a href="dashboard.html">Dashboard</a></li>
+                        <li><a href="course-test.html">Course Tests</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Tutor Resources</h3>
+                    <ul>
+                        <li><a href="login.html">Tutor Login</a></li>
+                        <li><a href="#">Tutor Registration</a></li>
+                        <li><a href="teacher-dashboard.html">Tutor Dashboard</a></li>
+                        <li><a href="data-retrieval.html">Student Data</a></li>
+                    </ul>
+                </div>
+            </div>
+             
+            
+        </div>
+        <div class="copyright">
+                <p>&copy; 2023 EduSphere. All rights reserved.</p>
+            </div>
+           
+    </footer>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check authentication
+            if (localStorage.getItem('isAuthenticated') !== 'true') {
+                window.location.href = 'Login.html';
+                return;
+            }
+
+            // Load user data
+            const userEmail = localStorage.getItem('userEmail');
+            document.getElementById('userName').textContent = userEmail || 'Tutor';
+
+            // Load student data
+            loadStudents();
+            updateDashboardStats();
+        });
+
+        // Load student data from localStorage or use mock data
+        const students = JSON.parse(localStorage.getItem('students')) || [
+            {
+                id: 'S001',
+                name: 'Panneer',
+                class: 'Java',
+                grade: 'B.E',
+                attendance: '95%',
+                performance: '87%',
+                status: 'good',
+                lastActivity: '2024-01-15',
+                assignments: {
+                    completed: 12,
+                    pending: 2,
+                    averageScore: '85%'
+                },
+                contact: {
+                    email: 'panneer@gmail.com',
+                    phone: '9360702428'
+                }
+            },
+            {
+                id: 'S002',
+                name: 'Mohan',
+                class: 'JavaScript',
+                grade: 'B.E',
+                attendance: '98%',
+                performance: '92%',
+                status: 'excellent',
+                lastActivity: '2024-01-14',
+                assignments: {
+                    completed: 15,
+                    pending: 0,
+                    averageScore: '94%'
+                },
+                contact: {
+                    email: 'mohan@gmail.com',
+                    phone: '9658423279'
+                }
+            },
+            {
+                id: 'S003',
+                name: 'Mounika',
+                class: 'Python',
+                grade: 'B.E',
+                attendance: '88%',
+                performance: '78%',
+                status: 'average',
+                lastActivity: '2024-01-13',
+                assignments: {
+                    completed: 10,
+                    pending: 3,
+                    averageScore: '76%'
+                },
+                contact: {
+                    email: 'mounika@gmail.com',
+                    phone: '7759815254'
+                }
+            },
+            {
+                id: 'S004',
+                name: 'Pavithra',
+                class: 'Python',
+                grade: 'B.E',
+                attendance: '82%',
+                performance: '65%',
+                status: 'needs_improvement',
+                lastActivity: '2024-01-12',
+                assignments: {
+                    completed: 8,
+                    pending: 5,
+                    averageScore: '62%'
+                },
+                contact: {
+                    email: 'pavithra@gmail.com',
+                    phone: '8875561561'
+                }
+            },
+            {
+                id: 'S005',
+                name: 'Vijay',
+                class: 'DSA',
+                grade: 'B.E',
+                attendance: '96%',
+                performance: '89%',
+                status: 'good',
+                lastActivity: '2024-01-16',
+                assignments: {
+                    completed: 14,
+                    pending: 1,
+                    averageScore: '88%'
+                },
+                contact: {
+                    email: 'vijay@gmail.com',
+                    phone: '7667360699'
+                }
+            },
+            {
+                id: 'S006',
+                name: 'Thiru',
+                class: 'Flutter',
+                grade: 'B.E',
+                attendance: '91%',
+                performance: '94%',
+                status: 'excellent',
+                lastActivity: '2024-01-15',
+                assignments: {
+                    completed: 16,
+                    pending: 0,
+                    averageScore: '93%'
+                },
+                contact: {
+                    email: 'thiru@gmail.com',
+                    phone: '9500652559'
+                }
+            }
+        ];
+
+        // Load student marks from localStorage
+        const studentMarks = JSON.parse(localStorage.getItem('studentMarks')) || [
+            { student: "John Smith", studentId: "S001", course: "Python Programming", score: 85, feedback: "Excellent work on the functions section", date: "2023-10-15" },
+            { student: "Emma Johnson", studentId: "S002", course: "SQL & Database Design", score: 92, feedback: "Great understanding of JOIN operations", date: "2023-10-14" }
+        ];
+
+        function updateDashboardStats() {
+            document.getElementById('totalStudents').textContent = students.length;
+            
+            // Calculate average attendance
+            const totalAttendance = students.reduce((sum, student) => {
+                return sum + parseInt(student.attendance);
+            }, 0);
+            const avgAttendance = Math.round(totalAttendance / students.length);
+            document.getElementById('avgAttendance').textContent = `${avgAttendance}%`;
+            
+            // Calculate average performance
+            const totalPerformance = students.reduce((sum, student) => {
+                return sum + parseInt(student.performance);
+            }, 0);
+            const avgPerformance = Math.round(totalPerformance / students.length);
+            document.getElementById('avgPerformance').textContent = `${avgPerformance}%`;
+        }
+
+        function loadStudents(studentsToLoad = students) {
+            const studentsGrid = document.getElementById('studentsGrid');
+            studentsGrid.innerHTML = '';
+
+            if (studentsToLoad.length === 0) {
+                studentsGrid.innerHTML = `
+                    <div class="no-results" style="grid-column: 1 / -1; text-align: center; padding: 2rem;">
+                        <i class="fas fa-search" style="font-size: 3rem; color: #6c757d; margin-bottom: 1rem;"></i>
+                        <h3>No students found</h3>
+                        <p>Try adjusting your search or filters</p>
+                    </div>
+                `;
+                return;
+            }
+
+            studentsToLoad.forEach(student => {
+                const card = document.createElement('div');
+                card.className = 'student-card';
+                card.onclick = () => showStudentDetails(student);
+                
+                // Get performance progress class
+                let progressClass = '';
+                if (student.status === 'excellent') progressClass = 'progress-excellent';
+                else if (student.status === 'good') progressClass = 'progress-good';
+                else if (student.status === 'average') progressClass = 'progress-average';
+                else progressClass = 'progress-needs_improvement';
+                
+                card.innerHTML = `
+                    <div class="student-card-header">
+                        <div>
+                            <div class="student-name">${student.name}</div>
+                            <div class="student-id">ID: ${student.id}</div>
+                        </div>
+                        <div class="student-status status-${student.status}">
+                            ${student.status.replace('_', ' ').toUpperCase()}
+                        </div>
+                    </div>
+                    
+                    <div class="student-info">
+                        <div class="info-item">
+                            <span class="info-label"><i class="fas fa-chalkboard"></i> Class:</span>
+                            <span class="info-value">${student.class.charAt(0).toUpperCase() + student.class.slice(1)}</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label"><i class="fas fa-graduation-cap"></i> Grade:</span>
+                            <span class="info-value">${student.grade}</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label"><i class="fas fa-calendar-check"></i> Attendance:</span>
+                            <span class="info-value">${student.attendance}</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label"><i class="fas fa-chart-line"></i> Performance:</span>
+                            <span class="info-value">${student.performance}</span>
+                        </div>
+                    </div>
+                    
+                    <div class="performance-bar">
+                        <div class="performance-progress ${progressClass}"></div>
+                    </div>
+                    
+                    <div class="student-card-footer">
+                        <div class="last-activity">
+                            <i class="fas fa-clock"></i> Last activity: ${student.lastActivity}
+                        </div>
+                        <button class="view-details-btn" onclick="event.stopPropagation(); showStudentDetails(${JSON.stringify(student).replace(/"/g, '&quot;')})">
+                            <i class="fas fa-eye"></i> View Details
+                        </button>
+                    </div>
+                `;
+                
+                studentsGrid.appendChild(card);
+            });
+        }
+
+        function searchStudents() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            
+            if (!searchTerm) {
+                loadStudents();
+                return;
+            }
+
+            const filteredStudents = students.filter(student =>
+                student.name.toLowerCase().includes(searchTerm) ||
+                student.id.toLowerCase().includes(searchTerm)
+            );
+
+            loadStudents(filteredStudents);
+        }
+
+        function handleSearchKeyPress(event) {
+            if (event.key === 'Enter') {
+                searchStudents();
+            }
+        }
+
+        function showAllStudents() {
+            document.getElementById('searchInput').value = '';
+            document.getElementById('classFilter').value = '';
+            document.getElementById('performanceFilter').value = '';
+            document.getElementById('sortBy').value = 'name';
+            loadStudents();
+        }
+
+        function filterStudents() {
+            const classFilter = document.getElementById('classFilter').value;
+            const performanceFilter = document.getElementById('performanceFilter').value;
+            
+            let filteredStudents = students;
+
+            if (classFilter) {
+                filteredStudents = filteredStudents.filter(student => student.class === classFilter);
+            }
+
+            if (performanceFilter) {
+                filteredStudents = filteredStudents.filter(student => student.status === performanceFilter);
+            }
+
+            loadStudents(filteredStudents);
+        }
+
+        function sortStudents() {
+            const sortBy = document.getElementById('sortBy').value;
+            let sortedStudents = [...students];
+            
+            switch(sortBy) {
+                case 'name':
+                    sortedStudents.sort((a, b) => a.name.localeCompare(b.name));
+                    break;
+                case 'nameDesc':
+                    sortedStudents.sort((a, b) => b.name.localeCompare(a.name));
+                    break;
+                case 'performance':
+                    sortedStudents.sort((a, b) => parseInt(b.performance) - parseInt(a.performance));
+                    break;
+                case 'performanceDesc':
+                    sortedStudents.sort((a, b) => parseInt(a.performance) - parseInt(b.performance));
+                    break;
+                case 'attendance':
+                    sortedStudents.sort((a, b) => parseInt(b.attendance) - parseInt(a.attendance));
+                    break;
+            }
+            
+            loadStudents(sortedStudents);
+        }
+
+        function toggleView(viewType) {
+            const gridViewBtn = document.getElementById('gridViewBtn');
+            const listViewBtn = document.getElementById('listViewBtn');
+            const studentsGrid = document.getElementById('studentsGrid');
+            
+            if (viewType === 'grid') {
+                gridViewBtn.classList.add('active');
+                listViewBtn.classList.remove('active');
+                studentsGrid.style.gridTemplateColumns = 'repeat(auto-fill, minmax(320px, 1fr))';
+            } else {
+                listViewBtn.classList.add('active');
+                gridViewBtn.classList.remove('active');
+                studentsGrid.style.gridTemplateColumns = '1fr';
+                
+                // Add list view specific styles to cards
+                const cards = document.querySelectorAll('.student-card');
+                cards.forEach(card => {
+                    card.style.display = 'flex';
+                    card.style.flexDirection = 'row';
+                    card.style.alignItems = 'center';
+                    card.style.justifyContent = 'space-between';
+                });
+            }
+        }
+
+        function showStudentDetails(student) {
+            const modal = document.getElementById('studentModal');
+            const modalStudentName = document.getElementById('modalStudentName');
+            const modalBody = document.getElementById('modalBody');
+
+            // Get student marks
+            const studentMark = studentMarks.filter(mark => mark.studentId === student.id);
+            
+            modalStudentName.textContent = `${student.name} (${student.id})`;
+            
+            modalBody.innerHTML = `
+                <div class="detail-section">
+                    <h3><i class="fas fa-info-circle"></i> Basic Information</h3>
+                    <div class="detail-grid">
+                        <div class="detail-item">
+                            <span class="detail-label"><i class="fas fa-graduation-cap"></i> Grade:</span>
+                            <span class="detail-value">${student.grade}</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label"><i class="fas fa-chalkboard"></i> Class:</span>
+                            <span class="detail-value">${student.class.charAt(0).toUpperCase() + student.class.slice(1)}</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label"><i class="fas fa-calendar-check"></i> Attendance:</span>
+                            <span class="detail-value">${student.attendance}</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label"><i class="fas fa-chart-line"></i> Performance:</span>
+                            <span class="detail-value performance-${student.status}">${student.performance}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="detail-section">
+                    <h3><i class="fas fa-tasks"></i> Academic Performance</h3>
+                    <div class="detail-grid">
+                        <div class="detail-item">
+                            <span class="detail-label"><i class="fas fa-check-circle"></i> Assignments Completed:</span>
+                            <span class="detail-value">${student.assignments.completed}</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label"><i class="fas fa-clock"></i> Assignments Pending:</span>
+                            <span class="detail-value">${student.assignments.pending}</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label"><i class="fas fa-percentage"></i> Average Score:</span>
+                            <span class="detail-value">${student.assignments.averageScore}</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label"><i class="fas fa-history"></i> Last Activity:</span>
+                            <span class="detail-value">${student.lastActivity}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="detail-section">
+                    <h3><i class="fas fa-address-book"></i> Contact Information</h3>
+                    <div class="detail-grid">
+                        <div class="detail-item">
+                            <span class="detail-label"><i class="fas fa-envelope"></i> Email:</span>
+                            <span class="detail-value">${student.contact.email}</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label"><i class="fas fa-phone"></i> Phone:</span>
+                            <span class="detail-value">${student.contact.phone}</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="detail-section">
+                    <h3><i class="fas fa-chart-bar"></i> Performance Overview</h3>
+                    <div class="performance-chart">
+                        <div class="chart-bar" style="height: ${student.class === 'Java' ? '92%' : student.class === 'JavaScript' ? '85%' : student.class === 'Python' ? '78%' : student.class === 'DSA' ? '88%' : '95%'}">
+                            <div class="chart-label">${student.class}</div>
+                        </div>
+                    </div>
+                </div>
+                
+                ${studentMark.length > 0 ? `
+                <div class="detail-section">
+                    <h3><i class="fas fa-graduation-cap"></i> Test Results</h3>
+                    <table class="marks-table">
+                        <thead>
+                            <tr>
+                                <th>Course</th>
+                                <th>Score</th>
+                                <th>Feedback</th>
+                                <th>Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${studentMark.map(mark => `
+                                <tr>
+                                    <td>${mark.course}</td>
+                                    <td>${mark.score}%</td>
+                                    <td>${mark.feedback}</td>
+                                    <td>${mark.date}</td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                </div>
+                ` : ''}
+            `;
+
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('studentModal');
+            modal.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        function navigateTo(page) {
+            window.location.href = page;
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('studentModal');
+            if (event.target === modal) {
+                closeModal();
+            }
+        };
+
+        // Close modal with Escape key
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                closeModal();
+            }
+        });
+    </script>
+</body>
+</html>
