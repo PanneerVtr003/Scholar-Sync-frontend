@@ -690,7 +690,6 @@ footer .container {
     <div class="user-info">
         <div class="user-avatar" id="userAvatar">TN</div>
         <span id="userName">Tutor Name</span>
-        <button onclick="logout()" class="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</button>
     
     <div class="menu-toggle" id="mobile-menu">
         <span class="bar"></span>
@@ -786,7 +785,7 @@ footer .container {
                     <ul>
                         <li><a href="login.html">Tutor Login</a></li>
                         <li><a href="#">Tutor Registration</a></li>
-                        <li><a href="teacher-dashboard.html">Tutor Dashboard</a></li>
+                        <li><a href="tutor-dashboard.html">Tutor Dashboard</a></li>
                         <li><a href="data-retrieval.html">Student Data</a></li>
                     </ul>
                 </div>
@@ -956,7 +955,7 @@ document.querySelectorAll('.nav-btn').forEach(link => {
                 localStorage.removeItem('isAuthenticated');
                 localStorage.removeItem('userEmail');
                 localStorage.removeItem('userName');
-                window.location.href = 'Login.html';
+                window.location.href = 'Dashboard.html';
             }
         }
     </script>
