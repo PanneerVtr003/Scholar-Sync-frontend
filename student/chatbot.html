@@ -3,55 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Enhanced Student Learning Assistant</title>
+    <title>Responsive Learning Assistant</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-       :root {
-            --primary: #4361ee;
-            --primary-dark: #3a0ca3;
-            --secondary: #f72585;
-            --success: #4cc9f0;
-            --warning: #ffb800;
-            --danger: #f72585;
-            --dark: #212529;
-            --light: #f8f9fa;
-            --gray: #6c757d;
-            --light-gray: #e9ecef;
-            --text-dark: #343a40;
-            --text-light: #6c757d;
-            --border-radius: 12px;
-            --shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-            --transition: all 0.3s ease;
-
+        :root {
             --primary: #4361ee;
             --secondary: #3a0ca3;
-            --accent: #f72585;
             --success: #4cc9f0;
-            --warning: #ffb800;
-            --danger: #f72585;
-            --dark: #212529;
             --light: #f8f9fa;
-            --gray: #6c757d;
-            --light-gray: #e9ecef;
-            --border-radius: 12px;
-            --shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            --dark: #212529;
+            --warning: #f72585;
+            --info: #7209b7;
             --transition: all 0.3s ease;
-            --background: #f5f7fb;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
         
         body {
-            background-color: #f5f7fb;
+            background: linear-gradient(135deg, #f5f7fb 0%, #e6e9f0 100%);
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-           
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
-            min-height: 100vh;
         }
         
         .container {
-            max-width: 1000px;
+            width: 100%;
+            max-width: 1200px;
             margin: 0 auto;
+            padding: 20px;
             flex: 1;
         }
         
@@ -59,22 +44,29 @@
             text-align: center;
             margin-bottom: 30px;
             color: var(--secondary);
+            padding: 20px 0;
         }
         
         .dashboard-header h1 {
-            font-weight: 600;
+            font-weight: 700;
             margin-bottom: 10px;
+            font-size: 2.5rem;
+            background: linear-gradient(135deg, var(--secondary) 0%, var(--primary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
         
         .dashboard-header p {
-            color: #7f8c8d;
-            font-size: 1.1rem;
+            color: #6c757d;
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin: 0 auto;
         }
         
         .main-content {
             display: flex;
-            gap: 20px;
-            margin-bottom: 30px;
+            gap: 25px;
+            margin-bottom: 40px;
         }
         
         .chat-section {
@@ -87,27 +79,32 @@
         
         .chatbot-container {
             background-color: white;
-            border-radius: 12px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            border-radius: 16px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
             overflow: hidden;
-            margin-bottom: 20px;
+            margin-bottom: 25px;
+            height: 600px;
+            display: flex;
+            flex-direction: column;
         }
         
         .chatbot-messages {
-            height: 400px;
+            flex: 1;
             overflow-y: auto;
             padding: 20px;
             display: flex;
             flex-direction: column;
             gap: 15px;
+            background-color: #fafbff;
         }
         
         .message {
-            max-width: 75%;
-            padding: 12px 16px;
+            max-width: 80%;
+            padding: 12px 18px;
             border-radius: 18px;
-            line-height: 1.4;
+            line-height: 1.5;
             animation: fadeIn 0.3s ease;
+            position: relative;
         }
         
         @keyframes fadeIn {
@@ -116,21 +113,30 @@
         }
         
         .message.user {
-            background-color: var(--primary);
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
             color: white;
             align-self: flex-end;
             border-bottom-right-radius: 5px;
         }
         
         .message.bot {
-            background-color: #f0f2f5;
-            color: var(--secondary);
+            background-color: white;
+            color: var(--dark);
             align-self: flex-start;
             border-bottom-left-radius: 5px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            border: 1px solid #eaeaea;
         }
         
         .message-content {
             margin-bottom: 5px;
+        }
+        
+        .message-time {
+            font-size: 0.7rem;
+            opacity: 0.7;
+            text-align: right;
+            margin-top: 5px;
         }
         
         .message-actions {
@@ -147,74 +153,94 @@
             cursor: pointer;
             padding: 0;
             font-size: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 4px;
         }
         
         .action-btn:hover {
-            text-decoration: underline;
+            color: var(--secondary);
         }
         
         .chatbot-input {
             display: flex;
             padding: 15px;
             border-top: 1px solid #eee;
-            background-color: #f9f9f9;
+            background-color: white;
+            gap: 10px;
         }
         
         .chatbot-input input {
             flex: 1;
-            padding: 12px 15px;
-            border: 1px solid #ddd;
-            border-radius: 20px;
+            padding: 14px 18px;
+            border: 1px solid #e0e0e0;
+            border-radius: 24px;
             outline: none;
-            transition: border-color 0.3s;
+            transition: var(--transition);
+            font-size: 1rem;
         }
         
         .chatbot-input input:focus {
             border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.15);
         }
         
         .chatbot-input button {
-            margin-left: 10px;
-            border-radius: 20px;
-            padding: 10px 20px;
-            font-weight: 500;
+            border-radius: 24px;
+            padding: 12px 24px;
+            font-weight: 600;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border: none;
+            color: white;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .chatbot-input button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(67, 97, 238, 0.25);
         }
         
         .upload-btn {
-            background-color: var(--success);
+            background: linear-gradient(135deg, var(--success) 0%, #2a9d8f 100%);
             color: white;
             border: none;
-            border-radius: 20px;
-            padding: 10px 15px;
+            border-radius: 24px;
+            padding: 12px 20px;
             cursor: pointer;
             display: flex;
             align-items: center;
-            gap: 5px;
+            gap: 8px;
+            font-weight: 600;
+            transition: var(--transition);
         }
         
         .upload-btn:hover {
-            background-color: #27ae60;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(76, 201, 240, 0.25);
         }
         
         .tools-card {
             background-color: white;
-            border-radius: 12px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
-            padding: 20px;
-            margin-bottom: 20px;
+            border-radius: 16px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+            padding: 24px;
+            margin-bottom: 25px;
         }
         
         .tools-card h3 {
             color: var(--secondary);
-            font-weight: 600;
-            margin-bottom: 15px;
+            font-weight: 700;
+            margin-bottom: 20px;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
+            font-size: 1.3rem;
         }
         
         .tools-card h3 i {
             color: var(--primary);
+            font-size: 1.4rem;
         }
         
         .tools-list {
@@ -223,11 +249,17 @@
         }
         
         .tools-list li {
-            padding: 10px 0;
-            border-bottom: 1px solid #eee;
+            padding: 12px 0;
+            border-bottom: 1px solid #f0f0f0;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
+            transition: var(--transition);
+        }
+        
+        .tools-list li:hover {
+            background-color: #fafbff;
+            padding-left: 10px;
         }
         
         .tools-list li:last-child {
@@ -236,64 +268,72 @@
         
         .tools-list li i {
             color: var(--primary);
-            width: 20px;
+            width: 24px;
+            font-size: 1.1rem;
         }
         
         .btn-secondary {
-            background-color: var(--light);
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
             border: none;
-            color: var(--secondary);
+            color: var(--dark);
             white-space: normal;
             text-align: left;
-            padding: 10px 15px;
-            border-radius: 8px;
-            transition: all 0.2s;
-            max-width: 300px;
+            padding: 14px 18px;
+            border-radius: 12px;
+            transition: var(--transition);
             width: 100%;
-            margin-bottom: 10px;
+            margin-bottom: 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+            font-weight: 500;
         }
         
         .btn-secondary:hover:not(:disabled) {
-            background-color: #dde4e6;
             transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+            background: linear-gradient(135deg, #e9ecef 0%, #dee2e6 100%);
         }
         
         .suggested-questions {
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 12px;
             margin-top: 1rem;
         }
         
         .typing-indicator {
-            display: inline-block;
-            position: relative;
-            width: 80px;
-            height: 40px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 18px;
+            background-color: white;
+            border-radius: 18px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            color: #6c757d;
+            font-size: 0.9rem;
+        }
+        
+        .typing-dots {
+            display: flex;
+            gap: 4px;
         }
         
         .typing-dot {
-            display: inline-block;
             width: 8px;
             height: 8px;
             border-radius: 50%;
-            background-color: #7f8c8d;
-            position: absolute;
+            background-color: #6c757d;
             animation: typing 1.4s infinite;
         }
         
         .typing-dot:nth-child(1) {
-            left: 8px;
             animation-delay: 0s;
         }
         
         .typing-dot:nth-child(2) {
-            left: 16px;
             animation-delay: 0.2s;
         }
         
         .typing-dot:nth-child(3) {
-            left: 24px;
             animation-delay: 0.4s;
         }
         
@@ -302,7 +342,7 @@
                 transform: translateY(0);
             }
             30% {
-                transform: translateY(-5px);
+                transform: translateY(-4px);
             }
         }
         
@@ -313,34 +353,148 @@
         .upload-container {
             display: flex;
             align-items: center;
-            gap: 10px;
-            margin-top: 10px;
+            gap: 12px;
             padding: 0 15px 15px;
+            background-color: white;
         }
         
         .file-name {
             font-size: 0.9rem;
-            color: #7f8c8d;
+            color: #6c757d;
+            flex: 1;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .main-content {
+                flex-direction: column;
+            }
+            
+            .chat-section, .tools-section {
+                width: 100%;
+            }
+            
+            .dashboard-header h1 {
+                font-size: 2.2rem;
+            }
+            
+            .chatbot-container {
+                height: 500px;
+            }
         }
         
         @media (max-width: 768px) {
-            .main-content {
-                flex-direction: column;
+            .container {
+                padding: 15px;
+            }
+            
+            .dashboard-header {
+                padding: 15px 0;
+            }
+            
+            .dashboard-header h1 {
+                font-size: 1.8rem;
+            }
+            
+            .dashboard-header p {
+                font-size: 1rem;
+            }
+            
+            .chatbot-input {
+                flex-wrap: wrap;
+            }
+            
+            .upload-btn {
+                width: 100%;
+                justify-content: center;
+                order: 3;
+                margin-top: 10px;
+            }
+            
+            .message {
+                max-width: 90%;
+            }
+            
+            .tools-card {
+                padding: 20px;
+            }
+            
+            .tools-card h3 {
+                font-size: 1.2rem;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .dashboard-header h1 {
+                font-size: 1.6rem;
+            }
+            
+            .chatbot-container {
+                height: 450px;
+                border-radius: 12px;
+            }
+            
+            .chatbot-messages {
+                padding: 15px;
+            }
+            
+            .message {
+                padding: 10px 14px;
+                font-size: 0.95rem;
+            }
+            
+            .chatbot-input {
+                padding: 12px;
+            }
+            
+            .chatbot-input input {
+                padding: 12px 16px;
+            }
+            
+            .chatbot-input button {
+                padding: 10px 18px;
+            }
+            
+            .tools-card {
+                padding: 18px;
+            }
+            
+            .btn-secondary {
+                padding: 12px 16px;
+                font-size: 0.95rem;
+            }
+        }
+        
+        @media (max-width: 400px) {
+            .dashboard-header h1 {
+                font-size: 1.4rem;
+            }
+            
+            .dashboard-header p {
+                font-size: 0.9rem;
+            }
+            
+            .message {
+                max-width: 95%;
+                font-size: 0.9rem;
+            }
+            
+            .chatbot-input button {
+                font-size: 0.9rem;
+            }
+            
+            .upload-btn {
+                font-size: 0.9rem;
+                padding: 10px 16px;
             }
         }
 
         /* Footer Styles */
         footer {
-            background: linear-gradient(135deg, #2c3e50, #34495e);
+            background: linear-gradient(135deg, var(--secondary) 0%, var(--dark) 100%);
             color: white;
             padding: 2rem 0 1rem;
             margin-top: auto;
-        }
-
-        footer .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 15px;
         }
 
         .footer-content {
@@ -500,9 +654,6 @@
             .copyright {
                 padding-top: 1.5rem;
             }
-            .upload-btn{
-                display: block;
-            }
         }
 
         /* Hover effects for better interactivity */
@@ -524,13 +675,6 @@
         .footer-column li a:hover::before {
             width: 100%;
         }
-
-        /* Print styles */
-        @media print {
-            footer {
-                display: none;
-            }
-        }
     </style>
 </head>
 <body>
@@ -549,6 +693,7 @@
                                 Hello! I'm your enhanced learning assistant. I can help you summarize documents, 
                                 provide study guidance, and suggest ways to improve your grades. How can I assist you today?
                             </div>
+                            <div class="message-time">10:00 AM</div>
                         </div>
                     </div>
                     
@@ -563,10 +708,10 @@
                             class="btn btn-primary"
                             id="send-button"
                         >
-                            Send
+                            Send <i class="fas fa-paper-plane"></i>
                         </button>
                         <label for="file-upload" class="upload-btn">
-                            <i class="fas fa-file-upload"></i> Upload
+                            <i class="fas fa-file-upload"></i> Upload File
                         </label>
                         <input id="file-upload" type="file" class="file-upload" accept=".pdf,.doc,.docx,.txt">
                     </div>
@@ -580,16 +725,16 @@
                     <h3><i class="fas fa-lightbulb"></i> Suggested Questions</h3>
                     <div class="suggested-questions">
                         <button class="btn btn-secondary suggested-btn">
-                            Can you summarize this document for me?
+                            <i class="fas fa-file-alt"></i> Can you summarize this document for me?
                         </button>
                         <button class="btn btn-secondary suggested-btn">
-                            How can I improve my grade in Biology?
+                            <i class="fas fa-chart-line"></i> How can I improve my grade in Biology?
                         </button>
                         <button class="btn btn-secondary suggested-btn">
-                            What are effective study techniques for exams?
+                            <i class="fas fa-book"></i> What are effective study techniques for exams?
                         </button>
                         <button class="btn btn-secondary suggested-btn">
-                            Can you create a study plan for my upcoming test?
+                            <i class="fas fa-calendar"></i> Can you create a study plan for my upcoming test?
                         </button>
                     </div>
                 </div>
@@ -674,7 +819,6 @@
         </div>
     </footer>
 
-
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const messagesContainer = document.getElementById('chatbot-messages');
@@ -699,6 +843,14 @@
                 messageContent.textContent = text;
                 messageElement.appendChild(messageContent);
                 
+                // Add timestamp
+                const now = new Date();
+                const timeString = now.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+                const timeElement = document.createElement('div');
+                timeElement.classList.add('message-time');
+                timeElement.textContent = timeString;
+                messageElement.appendChild(timeElement);
+                
                 if (actions.length > 0) {
                     const actionsElement = document.createElement('div');
                     actionsElement.classList.add('message-actions');
@@ -706,7 +858,7 @@
                     actions.forEach(action => {
                         const button = document.createElement('button');
                         button.classList.add('action-btn');
-                        button.textContent = action.text;
+                        button.innerHTML = `<i class="fas ${action.icon}"></i> ${action.text}`;
                         button.addEventListener('click', action.handler);
                         actionsElement.appendChild(button);
                     });
@@ -726,19 +878,18 @@
                 
                 loading = true;
                 const loadingElement = document.createElement('div');
-                loadingElement.classList.add('message', 'bot');
+                loadingElement.classList.add('typing-indicator');
                 loadingElement.id = 'loading-indicator';
                 
-                const typingIndicator = document.createElement('div');
-                typingIndicator.classList.add('typing-indicator');
+                loadingElement.innerHTML = `
+                    <span>Assistant is typing</span>
+                    <div class="typing-dots">
+                        <div class="typing-dot"></div>
+                        <div class="typing-dot"></div>
+                        <div class="typing-dot"></div>
+                    </div>
+                `;
                 
-                for (let i = 0; i < 3; i++) {
-                    const dot = document.createElement('div');
-                    dot.classList.add('typing-dot');
-                    typingIndicator.appendChild(dot);
-                }
-                
-                loadingElement.appendChild(typingIndicator);
                 messagesContainer.appendChild(loadingElement);
                 
                 // Scroll to bottom
@@ -766,70 +917,6 @@
                 if (analyzeBtn) analyzeBtn.disabled = !currentFile;
             }
             
-            // Function to handle document summarization
-            function handleSummarization(text) {
-                if (text.length < 100) {
-                    return "The text is too short to summarize effectively. Please provide a longer document or text.";
-                }
-                
-                // Simple summarization algorithm (in a real application, this would be more sophisticated)
-                const sentences = text.split('. ');
-                const importantSentences = sentences.filter(sentence => 
-                    sentence.length > 20 && 
-                    (sentence.includes('important') || 
-                     sentence.includes('conclusion') || 
-                     sentence.includes('result') || 
-                     sentence.includes('findings') ||
-                     sentence.match(/[A-Z][a-z]+ [A-Z][a-z]+/)) // Proper nouns might indicate important concepts
-                );
-                
-                if (importantSentences.length === 0) {
-                    return "Summary: " + sentences.slice(0, 3).join('. ') + ".";
-                }
-                
-                return "Summary: " + importantSentences.slice(0, 4).join('. ') + ".";
-            }
-            
-            // Function to handle study guidance requests
-            function handleStudyGuidance(topic) {
-                const guidance = {
-                    math: "For math, practice is key. Work on problems regularly, understand the underlying concepts, and review mistakes. Consider forming a study group to explain concepts to others.",
-                    biology: "Biology requires both memorization and understanding. Create concept maps, use flashcards for terminology, and relate concepts to real-world examples. Draw diagrams to visualize processes.",
-                    history: "Create timelines to understand historical events in context. Focus on cause and effect relationships. Use mnemonic devices to remember important dates and figures.",
-                    chemistry: "Understand the periodic table trends. Practice balancing equations. Use molecular model kits to visualize structures. Practice problem-solving regularly.",
-                    physics: "Focus on understanding fundamental principles. Practice deriving equations. Draw diagrams for problem visualization. Work on problems step by step.",
-                    literature: "Take notes while reading. Pay attention to themes, character development, and literary devices. Discuss interpretations with classmates to gain different perspectives.",
-                    general: "Space out your study sessions (spaced repetition). Test yourself regularly. Find a quiet study space. Teach concepts to someone else to solidify your understanding."
-                };
-                
-                const lowerTopic = topic.toLowerCase();
-                for (const [key, value] of Object.entries(guidance)) {
-                    if (lowerTopic.includes(key)) {
-                        return value;
-                    }
-                }
-                
-                return guidance.general;
-            }
-            
-            // Function to handle grade improvement requests
-            function handleGradeImprovement(subject) {
-                const improvements = {
-                    math: "To improve in math: 1) Identify specific areas of weakness, 2) Practice problems daily, 3) Seek help from your instructor, 4) Review mistakes thoroughly, 5) Use online resources like Khan Academy for extra practice.",
-                    biology: "To improve in biology: 1) Create detailed concept maps, 2) Use flashcards for terminology, 3) Draw and label diagrams, 4) Explain concepts to others, 5) Relate topics to real-world applications.",
-                    general: "To improve your grades: 1) Review past assignments and exams to identify patterns in mistakes, 2) Meet with your instructor to discuss improvement strategies, 3) Form a study group, 4) Improve time management, 5) Ensure you're getting enough sleep before exams."
-                };
-                
-                const lowerSubject = subject.toLowerCase();
-                for (const [key, value] of Object.entries(improvements)) {
-                    if (lowerSubject.includes(key)) {
-                        return value;
-                    }
-                }
-                
-                return improvements.general;
-            }
-            
             // Function to simulate bot response
             function getBotResponse(userInput) {
                 const lowerInput = userInput.toLowerCase();
@@ -838,18 +925,10 @@
                     return "I can summarize text or documents for you. Please paste the text you'd like me to summarize or upload a document.";
                 }
                 else if (lowerInput.includes("study") || lowerInput.includes("learn") || lowerInput.includes("exam")) {
-                    const subject = lowerInput.includes("math") ? "math" : 
-                                  lowerInput.includes("bio") ? "biology" : 
-                                  lowerInput.includes("history") ? "history" : 
-                                  lowerInput.includes("chem") ? "chemistry" : 
-                                  lowerInput.includes("physics") ? "physics" : 
-                                  lowerInput.includes("literature") ? "literature" : "general";
-                    return handleStudyGuidance(subject);
+                    return "Effective studying involves consistent practice, understanding concepts rather than memorizing, and taking regular breaks. I can help you create a personalized study plan based on your subjects and schedule.";
                 }
                 else if (lowerInput.includes("improve") || lowerInput.includes("grade") || lowerInput.includes("mark")) {
-                    const subject = lowerInput.includes("math") ? "math" : 
-                                  lowerInput.includes("bio") ? "biology" : "general";
-                    return handleGradeImprovement(subject);
+                    return "To improve your grades, focus on understanding your weaknesses, practicing regularly, seeking help when needed, and developing good study habits. I can provide specific strategies based on your subjects.";
                 }
                 else if (lowerInput.includes("hello") || lowerInput.includes("hi") || lowerInput.includes("hey")) {
                     return "Hello! How can I help you with your studies today?";
@@ -880,7 +959,7 @@
                     // Add bot response
                     const botResponse = getBotResponse(inputText);
                     addMessage(botResponse, 'bot', [
-                        { text: "Suggest study plan", handler: () => {
+                        { text: "Study plan", icon: "fa-calendar", handler: () => {
                             addMessage("Can you create a study plan for my upcoming test?", 'user');
                             showLoading();
                             setTimeout(() => {
@@ -888,7 +967,7 @@
                                 addMessage("Sure! I can help create a study plan. Please tell me: 1) What subject is the test on? 2) When is the test? 3) How many hours can you study each day?", 'bot');
                             }, 1000);
                         }},
-                        { text: "Provide summary", handler: () => {
+                        { text: "Summary", icon: "fa-file-alt", handler: () => {
                             addMessage("Can you summarize this for me?", 'user');
                             showLoading();
                             setTimeout(() => {
@@ -944,40 +1023,40 @@
                         const fileExtension = currentFile.name.split('.').pop().toLowerCase();
                         
                         if (fileExtension === 'pdf') {
-                            addMessage(`I've analyzed your PDF document (${currentFile.name}). I found 15 key points about cellular biology. Would you like me to:`, 'bot', [
-                                { text: "Summarize", handler: () => {
+                            addMessage(`I've analyzed your PDF document (${currentFile.name}). I found content about cellular biology. Would you like me to:`, 'bot', [
+                                { text: "Summarize", icon: "fa-file-alt", handler: () => {
                                     addMessage("Please summarize the PDF", 'user');
                                     showLoading();
                                     setTimeout(() => {
                                         hideLoading();
-                                        addMessage("Based on the PDF, here's a summary: The document covers the fundamentals of cellular biology, including cell structure, function, division, and energy production. Key topics include organelles' functions, mitosis and meiosis processes, and cellular respiration. The document emphasizes how cells are the basic building blocks of all living organisms.", 'bot');
+                                        addMessage("Based on the PDF, here's a summary: The document covers the fundamentals of cellular biology, including cell structure, function, division, and energy production. Key topics include organelles' functions, mitosis and meiosis processes, and cellular respiration.", 'bot');
                                     }, 1500);
                                 }},
-                                { text: "Create study guide", handler: () => {
+                                { text: "Study guide", icon: "fa-book", handler: () => {
                                     addMessage("Create a study guide from the PDF", 'user');
                                     showLoading();
                                     setTimeout(() => {
                                         hideLoading();
-                                        addMessage("I've created a study guide from your PDF with: 1) Key terminology flashcards, 2) Diagrams of cell structures, 3) Comparison tables of mitosis vs meiosis, 4) Practice questions on cellular respiration, 5) Summary of key concepts. Would you like me to email this to you?", 'bot');
+                                        addMessage("I've created a study guide from your PDF with: 1) Key terminology flashcards, 2) Diagrams of cell structures, 3) Comparison tables of mitosis vs meiosis, 4) Practice questions on cellular respiration.", 'bot');
                                     }, 1500);
                                 }}
                             ]);
                         } else {
                             addMessage(`I've processed your ${fileExtension.toUpperCase()} file (${currentFile.name}). How would you like me to help with this document?`, 'bot', [
-                                { text: "Summarize", handler: () => {
+                                { text: "Summarize", icon: "fa-file-alt", handler: () => {
                                     addMessage("Please summarize this document", 'user');
                                     showLoading();
                                     setTimeout(() => {
                                         hideLoading();
-                                        addMessage("The document discusses the impact of climate change on marine ecosystems. Key points include: rising sea temperatures affecting coral reefs, ocean acidification impacting shell-forming organisms, changing migration patterns of marine species, and potential solutions for mitigation and adaptation.", 'bot');
+                                        addMessage("The document discusses the impact of climate change on marine ecosystems. Key points include: rising sea temperatures affecting coral reefs, ocean acidification impacting shell-forming organisms, and changing migration patterns of marine species.", 'bot');
                                     }, 1500);
                                 }},
-                                { text: "Extract key points", handler: () => {
+                                { text: "Key points", icon: "fa-key", handler: () => {
                                     addMessage("Extract key points from this document", 'user');
                                     showLoading();
                                     setTimeout(() => {
                                         hideLoading();
-                                        addMessage("Key points extracted: 1) Climate change causes sea temperature rise, 2) Coral bleaching events have increased by 30%, 3) Ocean pH has decreased by 0.1 units since pre-industrial times, 4) 25% of marine species have altered migration patterns, 5) Conservation efforts focus on protected marine areas.", 'bot');
+                                        addMessage("Key points extracted: 1) Climate change causes sea temperature rise, 2) Coral bleaching events have increased, 3) Ocean pH has decreased since pre-industrial times, 4) Marine species have altered migration patterns.", 'bot');
                                     }, 1500);
                                 }}
                             ]);
