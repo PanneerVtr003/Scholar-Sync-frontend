@@ -23,7 +23,7 @@
             --shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
             --transition: all 0.3s ease;
 
-             --primary: #4361ee;
+            --primary: #4361ee;
             --secondary: #3a0ca3;
             --accent: #f72585;
             --success: #4cc9f0;
@@ -104,6 +104,7 @@
             border-radius: 4px;
             transition: var(--transition);
             font-weight: 500;
+            cursor: pointer;
         }
 
         nav a:hover, nav a.active {
@@ -158,6 +159,12 @@
 
         .page.active {
             display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
 
         /* Dashboard Header */
@@ -455,207 +462,207 @@
             background: var(--light);
         }
 
-        /* Footer */
         /* Footer Styles */
-footer {
-    background: linear-gradient(135deg, var(--secondary), var(--dark));
-    color: white;
-    padding: 2rem 0 1rem;
-    margin-top: auto;
-}
+        footer {
+            background: linear-gradient(135deg, var(--secondary), var(--dark));
+            color: white;
+            padding: 2rem 0 1rem;
+            margin-top: auto;
+        }
 
-footer .container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 15px;
-    width: 100%;
-}
+        footer .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+            width: 100%;
+        }
 
-.footer-content {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 2rem;
-    margin-bottom: 2rem;
-}
+        .footer-content {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
 
-@media (min-width: 576px) {
-    .footer-content {
-        grid-template-columns: repeat(2, 1fr);
-    }
-}
+        @media (min-width: 576px) {
+            .footer-content {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
 
-@media (min-width: 992px) {
-    .footer-content {
-        grid-template-columns: repeat(4, 1fr);
-    }
-}
+        @media (min-width: 992px) {
+            .footer-content {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
 
-.footer-column {
-    display: flex;
-    flex-direction: column;
-}
+        .footer-column {
+            display: flex;
+            flex-direction: column;
+        }
 
-.footer-column h3 {
-    margin-bottom: 1.2rem;
-    font-size: 1.2rem;
-    position: relative;
-    padding-bottom: 0.5rem;
-}
+        .footer-column h3 {
+            margin-bottom: 1.2rem;
+            font-size: 1.2rem;
+            position: relative;
+            padding-bottom: 0.5rem;
+        }
 
-.footer-column h3::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 40px;
-    height: 2px;
-    background-color: var(--primary);
-}
+        .footer-column h3::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 40px;
+            height: 2px;
+            background-color: var(--primary);
+        }
 
-.footer-column p {
-    color: rgba(255, 255, 255, 0.8);
-    margin-bottom: 1rem;
-    line-height: 1.6;
-}
+        .footer-column p {
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 1rem;
+            line-height: 1.6;
+        }
 
-.footer-column ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
+        .footer-column ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
 
-.footer-column li {
-    margin-bottom: 0.8rem;
-    transition: transform 0.3s ease;
-}
+        .footer-column li {
+            margin-bottom: 0.8rem;
+            transition: transform 0.3s ease;
+        }
 
-.footer-column li:hover {
-    transform: translateX(5px);
-}
+        .footer-column li:hover {
+            transform: translateX(5px);
+        }
 
-.footer-column a {
-    color: rgba(255, 255, 255, 0.8);
-    text-decoration: none;
-    transition: var(--transition);
-    display: inline-block;
-    padding: 2px 0;
-}
+        .footer-column a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            transition: var(--transition);
+            display: inline-block;
+            padding: 2px 0;
+            cursor: pointer;
+        }
 
-.footer-column a:hover {
-    color: white;
-    transform: translateX(3px);
-}
+        .footer-column a:hover {
+            color: white;
+            transform: translateX(3px);
+        }
 
-.social-links {
-    display: flex;
-    gap: 1rem;
-    margin-top: 1rem;
-}
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
 
-.social-links a {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.1);
-    color: white;
-    transition: var(--transition);
-}
+        .social-links a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            transition: var(--transition);
+        }
 
-.social-links a:hover {
-    background: var(--primary);
-    transform: translateY(-3px);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-}
+        .social-links a:hover {
+            background: var(--primary);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
 
-.copyright {
-    text-align: center;
-    padding-top: 2rem;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-    color: rgba(255, 255, 255, 0.6);
-    font-size: 0.9rem;
-}
+        .copyright {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.9rem;
+        }
 
-/* Animation for footer elements on load */
-@keyframes fadeInUp {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
+        /* Animation for footer elements on load */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
 
-.footer-column:nth-child(1) {
-    animation: fadeInUp 0.6s ease forwards;
-}
+        .footer-column:nth-child(1) {
+            animation: fadeInUp 0.6s ease forwards;
+        }
 
-.footer-column:nth-child(2) {
-    animation: fadeInUp 0.8s ease forwards;
-}
+        .footer-column:nth-child(2) {
+            animation: fadeInUp 0.8s ease forwards;
+        }
 
-.footer-column:nth-child(3) {
-    animation: fadeInUp 1s ease forwards;
-}
+        .footer-column:nth-child(3) {
+            animation: fadeInUp 1s ease forwards;
+        }
 
-.footer-column:nth-child(4) {
-    animation: fadeInUp 1.2s ease forwards;
-}
+        .footer-column:nth-child(4) {
+            animation: fadeInUp 1.2s ease forwards;
+        }
 
-/* Responsive adjustments for very small screens */
-@media (max-width: 576px) {
-    footer {
-        padding: 1.5rem 0 1rem;
-    }
-    
-    .footer-content {
-        gap: 1.5rem;
-    }
-    
-    .footer-column h3 {
-        font-size: 1.1rem;
-        margin-bottom: 1rem;
-    }
-    
-    .social-links {
-        justify-content: center;
-    }
-    
-    .copyright {
-        padding-top: 1.5rem;
-    }
-}
+        /* Responsive adjustments for very small screens */
+        @media (max-width: 576px) {
+            footer {
+                padding: 1.5rem 0 1rem;
+            }
+            
+            .footer-content {
+                gap: 1.5rem;
+            }
+            
+            .footer-column h3 {
+                font-size: 1.1rem;
+                margin-bottom: 1rem;
+            }
+            
+            .social-links {
+                justify-content: center;
+            }
+            
+            .copyright {
+                padding-top: 1.5rem;
+            }
+        }
 
-/* Hover effects for better interactivity */
-.footer-column li a {
-    position: relative;
-}
+        /* Hover effects for better interactivity */
+        .footer-column li a {
+            position: relative;
+        }
 
-.footer-column li a::before {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 0;
-    height: 1px;
-    background-color: var(--primary);
-    transition: width 0.3s ease;
-}
+        .footer-column li a::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background-color: var(--primary);
+            transition: width 0.3s ease;
+        }
 
-.footer-column li a:hover::before {
-    width: 100%;
-}
+        .footer-column li a:hover::before {
+            width: 100%;
+        }
 
-/* Print styles */
-@media print {
-    footer {
-        display: none;
-    }
-}
+        /* Print styles */
+        @media print {
+            footer {
+                display: none;
+            }
+        }
 
         /* Responsive Design */
         @media (max-width: 992px) {
@@ -739,73 +746,144 @@ footer .container {
             }
         }
 
-             /* Mobile Menu Toggle */
-.menu-toggle {
-    display: none;
-    flex-direction: column;
-    justify-content: space-between;
-    width: 30px;
-    height: 21px;
-    cursor: pointer;
-}
+        /* Mobile Menu Toggle */
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            justify-content: space-between;
+            width: 30px;
+            height: 21px;
+            cursor: pointer;
+        }
 
-.menu-toggle .bar {
-    height: 3px;
-    width: 100%;
-    background-color: white;
-    border-radius: 10px;
-    transition: var(--transition);
-}
+        .menu-toggle .bar {
+            height: 3px;
+            width: 100%;
+            background-color: white;
+            border-radius: 10px;
+            transition: var(--transition);
+        }
 
-/* Mobile Navigation */
-@media (max-width: 992px) {
-    .menu-toggle {
-        display: flex;
-    }
-    
-    nav ul {
-        position: fixed;
-        top: 70px;
-        left: -100%;
-               background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-        flex-direction: column;
-        width: 100%;
-        text-align: center;
-        transition: 0.3s;
-        box-shadow: 0 10px 27px rgba(0, 0, 0, 0.05);
-        padding: 2rem 0;
-        gap: 0;
-        z-index: 99;
-    }
-    
-    nav ul.active {
-        left: 0;
-    }
-    
-    nav ul li {
-        margin: 1.5rem 0;
-    }
-    
-    .header-content {
-        flex-direction: row !important;
-        justify-content: space-between;
-    }
-}
+        /* Mobile Navigation */
+        @media (max-width: 992px) {
+            .menu-toggle {
+                display: flex;
+            }
+            
+            nav ul {
+                position: fixed;
+                top: 70px;
+                left: -100%;
+                background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+                flex-direction: column;
+                width: 100%;
+                text-align: center;
+                transition: 0.3s;
+                box-shadow: 0 10px 27px rgba(0, 0, 0, 0.05);
+                padding: 2rem 0;
+                gap: 0;
+                z-index: 99;
+            }
+            
+            nav ul.active {
+                left: 0;
+            }
+            
+            nav ul li {
+                margin: 1.5rem 0;
+            }
+            
+            .header-content {
+                flex-direction: row !important;
+                justify-content: space-between;
+            }
+        }
 
-/* Animation for hamburger menu */
-.menu-toggle.active .bar:nth-child(2) {
-    opacity: 0;
-}
+        /* Animation for hamburger menu */
+        .menu-toggle.active .bar:nth-child(2) {
+            opacity: 0;
+        }
 
-.menu-toggle.active .bar:nth-child(1) {
-    transform: translateY(9px) rotate(45deg);
-}
+        .menu-toggle.active .bar:nth-child(1) {
+            transform: translateY(9px) rotate(45deg);
+        }
 
-.menu-toggle.active .bar:nth-child(3) {
-    transform: translateY(-9px) rotate(-45deg);
-}
+        .menu-toggle.active .bar:nth-child(3) {
+            transform: translateY(-9px) rotate(-45deg);
+        }
 
+        /* Student Data Page Styles */
+        .search-section {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
 
+        .search-box {
+            position: relative;
+            flex: 1;
+            min-width: 250px;
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--gray);
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 0.8rem 1rem 0.8rem 40px;
+            border: 2px solid var(--light-gray);
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+
+        .filters {
+            display: flex;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            min-width: 180px;
+        }
+
+        .filter-group label {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--dark);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .filter-group select {
+            padding: 0.8rem;
+            border: 2px solid var(--light-gray);
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+
+        .student-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .student-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+        }
     </style>
 </head>
 <body>
@@ -822,15 +900,17 @@ footer .container {
                 </div>
                 <nav>
                     <ul>
-                        <li><a href="#" class="active" onclick="showPage('courses-page')">Courses</a></li>
-                        <li><a href="#" onclick="showPage('student-dashboard')">My Learning</a></li>
-                        <li><a href="#" onclick="showPage('teacher-dashboard')">Teacher Dashboard</a></li>
-                        <li><a href="#" onclick="showPage('student-data-page')">Student Data</a></li>
-                    </ul>
-                </nav>
-                <div class="auth-buttons">
-                    <button class="btn btn-outline" onclick="logout()">Logout</button>
+                        <li><a href="#" class="nav-link active" data-page="courses-page">Courses</a></li>
+                        <li><a href="#" class="nav-link" data-page="student-dashboard">My Learning</a></li>
+                        <li><a href="#" class="nav-link" data-page="teacher-dashboard">Teacher Dashboard</a></li>
+                        <li><a href="#" class="nav-link" data-page="student-data-page">Student Data</a></li>
+                        <div class="auth-buttons">
+                <a  style="text-decoration: none;color: white; "  href="../index.html" class="logout" style="color: #e9ecef;">Logout</a>
                 </div>
+                    </ul>
+                    
+                </nav>
+                
             </div>
         </div>
     </header>
@@ -1159,9 +1239,9 @@ footer .container {
                 <div class="footer-column">
                     <h3>Quick Links</h3>
                     <ul>
-                        <li><a href="#" onclick="showPage('courses-page')">Courses</a></li>
-                        <li><a href="#" onclick="showPage('student-dashboard')">My Learning</a></li>
-                        <li><a href="#" onclick="showPage('teacher-dashboard')">Teacher Dashboard</a></li>
+                        <li><a href="#" class="nav-link" data-page="courses-page">Courses</a></li>
+                        <li><a href="#" class="nav-link" data-page="student-dashboard">My Learning</a></li>
+                        <li><a href="#" class="nav-link" data-page="teacher-dashboard">Teacher Dashboard</a></li>
                     </ul>
                 </div>
                 
@@ -1170,8 +1250,8 @@ footer .container {
                     <ul>
                         <li><a href="#">Student Login</a></li>
                         <li><a href="#">Student Registration</a></li>
-                        <li><a href="#" onclick="showPage('student-dashboard')">Dashboard</a></li>
-                        <li><a href="#" onclick="showPage('quiz-section')">Course Tests</a></li>
+                        <li><a href="#" class="nav-link" data-page="student-dashboard">Dashboard</a></li>
+                        <li><a href="#" class="nav-link" data-page="quiz-section">Course Tests</a></li>
                     </ul>
                 </div>
                 
@@ -1180,8 +1260,8 @@ footer .container {
                     <ul>
                         <li><a href="#">Tutor Login</a></li>
                         <li><a href="#">Tutor Registration</a></li>
-                        <li><a href="#" onclick="showPage('teacher-dashboard')">Tutor Dashboard</a></li>
-                        <li><a href="#" onclick="showPage('student-data-page')">Student Data</a></li>
+                        <li><a href="#" class="nav-link" data-page="teacher-dashboard">Tutor Dashboard</a></li>
+                        <li><a href="#" class="nav-link" data-page="student-data-page">Student Data</a></li>
                     </ul>
                 </div>
             </div>
@@ -1193,28 +1273,24 @@ footer .container {
     </footer>
 
     <script>
+        // Mobile menu functionality
+        const mobileMenu = document.getElementById('mobile-menu');
+        const navMenu = document.querySelector('nav ul');
 
+        function toggleMenu() {
+            mobileMenu.classList.toggle('active');
+            navMenu.classList.toggle('active');
+        }
 
+        mobileMenu.addEventListener('click', toggleMenu);
 
-// Mobile menu functionality
-const mobileMenu = document.getElementById('mobile-menu');
-const navMenu = document.querySelector('nav ul');
-
-function toggleMenu() {
-    mobileMenu.classList.toggle('active');
-    navMenu.classList.toggle('active');
-}
-
-mobileMenu.addEventListener('click', toggleMenu);
-
-// Close menu when clicking on a link
-document.querySelectorAll('nav a').forEach(link => {
-    link.addEventListener('click', () => {
-        mobileMenu.classList.remove('active');
-        navMenu.classList.remove('active');
-    });
-});
-
+        // Close menu when clicking on a link
+        document.querySelectorAll('nav a').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.remove('active');
+                navMenu.classList.remove('active');
+            });
+        });
 
         // Application State
         const state = {
@@ -1457,12 +1533,21 @@ document.querySelectorAll('nav a').forEach(link => {
                 link.classList.remove('active');
             });
             
+            // Find and activate the current nav link
+            const activeLink = document.querySelector(`.nav-link[data-page="${pageId}"]`);
+            if (activeLink) {
+                activeLink.classList.add('active');
+            }
+            
             // Update marks table and student data when navigating to those pages
             if (pageId === 'teacher-dashboard') {
                 updateMarksTable();
             } else if (pageId === 'student-data-page') {
                 loadStudents();
             }
+            
+            // Scroll to top when changing pages
+            window.scrollTo(0, 0);
         }
 
         function selectCourse(courseId) {
@@ -1625,10 +1710,10 @@ document.querySelectorAll('nav a').forEach(link => {
                 resultsMessage.textContent = 'Good job! You have a solid foundation.';
             } else if (score >= 2) {
                 resultsMessage.textContent = 'Not bad! Keep studying to improve your knowledge.';
-            else {
+            } else {
                 resultsMessage.textContent = 'Keep practicing! You\'ll improve with more study.';
             }
-        }}
+        }
 
         // Save quiz score to student profile
         function saveQuizScore() {
@@ -1868,7 +1953,16 @@ document.querySelectorAll('nav a').forEach(link => {
 
         // Initialize the application
         document.addEventListener('DOMContentLoaded', function() {
-            // Set up event listeners
+            // Set up event listeners for navigation
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const pageId = this.getAttribute('data-page');
+                    showPage(pageId);
+                });
+            });
+            
+            // Set up other event listeners
             document.getElementById('take-quiz').addEventListener('click', startQuiz);
             document.getElementById('prev-lesson').addEventListener('click', () => loadLesson(state.currentLesson - 1));
             document.getElementById('next-lesson').addEventListener('click', () => loadLesson(state.currentLesson + 1));
