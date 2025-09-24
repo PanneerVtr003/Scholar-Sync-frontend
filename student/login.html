@@ -501,65 +501,32 @@
 
     <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const form = document.getElementById('loginFormElement');
-            const togglePassword = document.getElementById('toggleLoginPassword');
-            const passwordInput = document.getElementById('loginPassword');
-            const loadingOverlay = document.getElementById('loadingOverlay');
-            
-            // Toggle password visibility
-            togglePassword.addEventListener('click', function() {
-                const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
-                passwordInput.setAttribute('type', type);
-                this.querySelector('i').classList.toggle('fa-eye');
-                this.querySelector('i').classList.toggle('fa-eye-slash');
-            });
-            
-            // Form validation
-            form.addEventListener('submit', function(e) {
-                e.preventDefault();
-                let isValid = true;
-                
-                // Validate email
-                const email = document.getElementById('loginEmail');
-                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-                if (!emailRegex.test(email.value)) {
-                    document.getElementById('loginEmailError').style.display = 'block';
-                    isValid = false;
-                } else {
-                    document.getElementById('loginEmailError').style.display = 'none';
-                }
-                
-                // Validate password
-                if (!passwordInput.value) {
-                    document.getElementById('loginPasswordError').style.display = 'block';
-                    isValid = false;
-                } else {
-                    document.getElementById('loginPasswordError').style.display = 'none';
-                }
-                
-                // If form is valid, simulate login
-                if (isValid) {
-                    loadingOverlay.style.display = 'flex';
-                    document.getElementById('loginError').style.display = 'none';
-                    
-                    // Simulate API call
-                    setTimeout(() => {
-                        loadingOverlay.style.display = 'none';
-                        
-                        // Simulate random success/failure for demo
-                        if (Math.random() > 0.3) {
-                            // Success - redirect to dashboard
-                            window.location.href = 'dashboard.html';
-                        } else {
-                            // Error
-                            document.getElementById('loginError').textContent = 'Invalid email or password';
-                            document.getElementById('loginError').style.display = 'block';
-                        }
-                    }, 1500);
-                }
-            });
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('loginFormElement');
+
+    form.addEventListener('submit', async function(e) {
+        e.preventDefault();
+
+        const email = document.getElementById('loginEmail').value;
+        const password = document.getElementById('loginPassword').value;
+
+        const res = await fetch("http://localhost:5000/api/auth/login", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email, password })
         });
-    </script>
+
+        const data = await res.json();
+
+        if (res.status === 200) {
+            window.location.href = "dashboard.html";
+        } else {
+            document.getElementById('loginError').textContent = data.message;
+            document.getElementById('loginError').style.display = "block";
+        }
+    });
+});
+</script>
+
 </body>
 </html>
