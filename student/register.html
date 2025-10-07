@@ -486,71 +486,110 @@ document.addEventListener('DOMContentLoaded', function () {
         const email = document.getElementById('email').value.trim();
         const password = document.getElementById('password').value;
         const confirmPassword = document.getElementById('confirmPassword').value;
+        const terms = document.getElementById('terms').checked;
 
-        // Reset error messages
+        // Reset messages
+        document.getElementById('fullnameError').style.display = "none";
+        document.getElementById('emailError').style.display = "none";
+        document.getElementById('passwordError').style.display = "none";
         document.getElementById('confirmPasswordError').style.display = "none";
         document.getElementById('registerSuccess').textContent = "";
 
+        let isValid = true;
+
         // Validation
         if (!fullname) {
-            alert("Full name is required");
-            return;
-        }
-        if (!email) {
-            alert("Email is required");
-            return;
-        }
-        if (password.length < 6) {
-            alert("Password must be at least 6 characters");
-            return;
-        }
-        if (password !== confirmPassword) {
-            document.getElementById('confirmPasswordError').style.display = "block";
-            return;
+            document.getElementById('fullnameError').style.display = "block";
+            isValid = false;
         }
 
+        if (!email || !isValidEmail(email)) {
+            document.getElementById('emailError').style.display = "block";
+            isValid = false;
+        }
+
+        if (password.length < 6) {
+            document.getElementById('passwordError').style.display = "block";
+            isValid = false;
+        }
+
+        if (password !== confirmPassword) {
+            document.getElementById('confirmPasswordError').style.display = "block";
+            isValid = false;
+        }
+
+        if (!terms) {
+            alert("Please agree to the Terms & Conditions");
+            isValid = false;
+        }
+
+        if (!isValid) return;
+
         try {
-            const res = await fetch("http://localhost:5000/api/users/register", { // FIXED ROUTE
+            const res = await fetch("https://scholar-sync-backend-yse0.onrender.com/api/users/register", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ fullname, email, password })
             });
 
-            // Check if the response is JSON
-            let data;
-            try {
-                data = await res.json();
-            } catch (err) {
-                console.error("Response is not JSON", await res.text());
-                alert("Server returned an error. Check console.");
-                return;
-            }
+            const data = await res.json();
 
             if (res.ok) {
-                document.getElementById('registerSuccess').textContent = data.message || "Registration successful!";
-                setTimeout(() => window.location.href = "login.html", 1500);
+                document.getElementById('registerSuccess').textContent = data.message + " Redirecting to login...";
+                document.getElementById('registerSuccess').style.color = "var(--success)";
+                form.reset();
+                setTimeout(() => {
+                    window.location.href = "login.html";
+                }, 2000);
             } else {
-                document.getElementById('registerSuccess').textContent = data.message || "Registration failed.";
+                document.getElementById('registerSuccess').textContent = data.message;
+                document.getElementById('registerSuccess').style.color = "var(--danger)";
             }
         } catch (error) {
-            console.error("Network error", error);
-            alert("Network error. Please try again later.");
+            console.error("Registration error:", error);
+            document.getElementById('registerSuccess').textContent = "Network error. Please try again.";
+            document.getElementById('registerSuccess').style.color = "var(--danger)";
         }
     });
 
+    // Email validation function
+    function isValidEmail(email) {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return emailRegex.test(email);
+    }
+
     // Toggle password visibility
-    document.getElementById('togglePassword').addEventListener('click', () => {
-        const pwd = document.getElementById('password');
-        pwd.type = pwd.type === "password" ? "text" : "password";
+    document.getElementById('togglePassword').addEventListener('click', function() {
+        const passwordInput = document.getElementById('password');
+        const icon = this.querySelector('i');
+        if (passwordInput.type === "password") {
+            passwordInput.type = "text";
+            icon.classList.remove('fa-eye');
+            icon.classList.add('fa-eye-slash');
+        } else {
+            passwordInput.type = "password";
+            icon.classList.remove('fa-eye-slash');
+            icon.classList.add('fa-eye');
+        }
     });
 
-    document.getElementById('toggleConfirmPassword').addEventListener('click', () => {
-        const pwd = document.getElementById('confirmPassword');
-        pwd.type = pwd.type === "password" ? "text" : "password";
+    document.getElementById('toggleConfirmPassword').addEventListener('click', function() {
+        const confirmPasswordInput = document.getElementById('confirmPassword');
+        const icon = this.querySelector('i');
+        if (confirmPasswordInput.type === "password") {
+            confirmPasswordInput.type = "text";
+            icon.classList.remove('fa-eye');
+            icon.classList.add('fa-eye-slash');
+        } else {
+            confirmPasswordInput.type = "password";
+            icon.classList.remove('fa-eye-slash');
+            icon.classList.add('fa-eye');
+        }
     });
 });
 </script>
-
+        
     </body>
     </html>
+
 
