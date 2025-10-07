@@ -500,33 +500,93 @@
     </footer>
 
     <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
-    <script>
+<script>
 document.addEventListener('DOMContentLoaded', function() {
     const form = document.getElementById('loginFormElement');
+    const loadingOverlay = document.getElementById('loadingOverlay');
 
     form.addEventListener('submit', async function(e) {
         e.preventDefault();
 
-        const email = document.getElementById('loginEmail').value;
+        const email = document.getElementById('loginEmail').value.trim();
         const password = document.getElementById('loginPassword').value;
+        const rememberMe = document.getElementById('rememberMe').checked;
 
-        const res = await fetch("http://localhost:5000/api/auth/login", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ email, password })
-        });
+        // Reset error
+        document.getElementById('loginError').style.display = "none";
 
-        const data = await res.json();
-
-        if (res.status === 200) {
-            window.location.href = "dashboard.html";
-        } else {
-            document.getElementById('loginError').textContent = data.message;
+        // Validation
+        if (!email || !password) {
+            document.getElementById('loginError').textContent = "Please fill in all fields";
             document.getElementById('loginError').style.display = "block";
+            return;
+        }
+
+        // Show loading
+        loadingOverlay.style.display = "flex";
+
+        try {
+            const res = await fetch("https://scholar-sync-backend-yse0.onrender.com/api/auth/login", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ email, password })
+            });
+
+            const data = await res.json();
+
+            if (res.ok) {
+                // Store token and user data
+                localStorage.setItem('token', data.data.token);
+                localStorage.setItem('user', JSON.stringify(data.data.user));
+                
+                if (rememberMe) {
+                    localStorage.setItem('rememberMe', 'true');
+                }
+
+                document.getElementById('loginError').style.display = "none";
+                document.getElementById('loginSuccess').textContent = "Login successful! Redirecting...";
+                document.getElementById('loginSuccess').style.color = "var(--success)";
+                
+                setTimeout(() => {
+                    window.location.href = "dashboard.html";
+                }, 1500);
+            } else {
+                document.getElementById('loginError').textContent = data.message;
+                document.getElementById('loginError').style.display = "block";
+            }
+        } catch (error) {
+            console.error("Login error:", error);
+            document.getElementById('loginError').textContent = "Network error. Please try again.";
+            document.getElementById('loginError').style.display = "block";
+        } finally {
+            loadingOverlay.style.display = "none";
         }
     });
+
+    // Toggle password visibility
+    document.getElementById('toggleLoginPassword').addEventListener('click', function() {
+        const passwordInput = document.getElementById('loginPassword');
+        const icon = this.querySelector('i');
+        if (passwordInput.type === "password") {
+            passwordInput.type = "text";
+            icon.classList.remove('fa-eye');
+            icon.classList.add('fa-eye-slash');
+        } else {
+            passwordInput.type = "password";
+            icon.classList.remove('fa-eye-slash');
+            icon.classList.add('fa-eye');
+        }
+    });
+
+    // Check if user is already logged in
+    const token = localStorage.getItem('token');
+    if (token) {
+        // Optional: Verify token and redirect if valid
+        window.location.href = "dashboard.html";
+    }
 });
 </script>
 
 </body>
 </html>
+
